@@ -4,8 +4,8 @@
   "description": "SecureChat enables E2EE for channels with multiple people in them, messages are delivered fast and reliably",
   "main": "init.js",
   "author": {
-    "name": "Vincent Costa",
-    "email": "costa.vincent132@gmail.com"
+    "name": "Organization",
+    "email": "group email"
   },
   "repository": "",
   "license": "MIT",
