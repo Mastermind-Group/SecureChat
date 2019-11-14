@@ -20,10 +20,35 @@ const Channel = props => {
         lastMessage = message.newString + (message.continued ? "..." : "")
     }
 
+    const clickCard = _ => {
+        props.setActive(props.data.index)
+    }
+
+    const cardStyle = {
+        cursor: "pointer", 
+        backgroundColor: props.isCurrent ? theme.palette.primary.main : "", 
+        padding: 15
+    }
+
+    const titleStyle = {
+        margin: "0 5px", 
+        color: props.isCurrent ? 
+                theme.palette.primary.contrastText : 
+                theme.palette.text.primary
+    }
+
+    const subtitleStyle = {
+        margin: "0 5px", 
+        marginLeft: 10, 
+        color: props.isCurrent ? 
+                theme.palette.primary.contrastText : 
+                theme.palette.text.primary
+    }
+
     return (
-        <Card onClick={_ => props.setActive(props.data.index)} style={{ cursor: "pointer", backgroundColor: props.isCurrent ? theme.palette.primary.main : "", padding: 15 }} >
-            <h2 style={{ margin: "0 5px", color: props.isCurrent ? theme.palette.primary.contrastText : theme.palette.text.primary }}>{props.data.Name}</h2>
-            {lastMessage !== "" && <p style={{ margin: "0 5px", marginLeft: 10, color: props.isCurrent ? theme.palette.primary.contrastText : theme.palette.text.primary }}>{sender}: {lastMessage}</p>}
+        <Card onClick={clickCard} style={cardStyle} >
+            <h2 style={titleStyle}>{props.data.Name}</h2>
+            {lastMessage !== "" && <p style={subtitleStyle}>{sender}: {lastMessage}</p>}
         </Card>
     )
 }
