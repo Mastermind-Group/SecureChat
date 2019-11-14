@@ -49,23 +49,31 @@ const Register = props => {
         setForm({ ...form, [name]: value.replace(" ", "") })
     }
 
+    const validForm = _ => {
+        if (form.username === "") {
+            setError("Username can't be blank")
+            return false
+        }
+
+        if (form.password === "") {
+            setError("Password can't be blank")
+            return false
+        }
+
+        if (form.confirm !== form.password) {
+            setError("Passwords dont match")
+            return false
+        }
+
+        return true
+    }
+
     const handleClick = event => {
         event.preventDefault()
 
         setError("")
 
-        if (form.username === "") {
-            setError("Username can't be blank")
-            return
-        }
-
-        if (form.password === "") {
-            setError("Password can't be blank")
-            return
-        }
-
-        if (form.confirm !== form.password) {
-            setError("Passwords dont match")
+        if(!validForm()) {
             return
         }
 
@@ -81,60 +89,51 @@ const Register = props => {
         setOpen(false)
     }
 
+    const handleGenKeys = _ => {
+        generateKeyPair("rsa", {
+            modulusLength: 4096,
+            publicKeyEncoding: {
+                type: "spki",
+                format: "pem"
+            },
+            privateKeyEncoding: {
+                type: "pkcs8",
+                format: "pem",
+            }
+        }, (_err, publicKey, privateKey) => {
+            setKeys({
+                publicKey: publicKey,
+                privateKey: privateKey
+            })
+
+            const protectedKey = utilCrypto.encrypt(privateKey, form.password)
+
+            setGenerating(false)
+
+            handleSignup(publicKey, protectedKey)
+        })
+    }
+
     const handleSubmit = _ => {
-
-
         setStatus("Generating RSA keypair locally...")
         setGenerating(true)
 
-        let publicKey = keys.publicKey,
-            privateKey = keys.privateKey
-
-        if (publicKey === "") {
-            generateKeyPair("rsa", {
-                modulusLength: 4096,
-                publicKeyEncoding: {
-                    type: "spki",
-                    format: "pem"
-                },
-                privateKeyEncoding: {
-                    type: "pkcs8",
-                    format: "pem",
-                }
-            }, (_err, publicKey2, privateKey2) => {
-                publicKey = publicKey2
-                privateKey = privateKey2
-
-                setKeys({
-                    publicKey: publicKey,
-                    privateKey: privateKey
-                })
-
-                const protectedKey = utilCrypto.encrypt(privateKey, form.password)
-
-                setGenerating(false)
-
-                handleRegistrationReq(publicKey, protectedKey)
-            })
+        if (keys.publicKey === "") {
+            handleGenKeys()
         } else {
             const protectedKey = utilCrypto.encrypt(keys.privateKey, form.password)
 
             setGenerating(false)
 
-            handleRegistrationReq(keys.publicKey, protectedKey)
+            handleSignup(keys.publicKey, protectedKey)
         }
     }
 
-    const handleRegistrationReq = (publicKey, protectedKey) => {
-        setLoading(true)
-        setError("")
-        setStatus("")
-
+    const initLoadingInterval = _ => {
         const startTime = new Date().getTime()
         let endTime = new Date()
 
         endTime.setSeconds(endTime.getSeconds() + 7)
-
         endTime = endTime.getTime()
 
         interval = setInterval(_ => {
@@ -144,7 +143,9 @@ const Register = props => {
 
             setPercentage(percentage)
         }, 20)
+    }
 
+    const sendSignup = (publicKey, protectedKey) => {
         axios.post("https://servicetechlink.com/register", JSON.stringify({
             username: form.username,
             password: form.password,
@@ -172,6 +173,16 @@ const Register = props => {
                     setError("You dont have an internet connection or the server is down")
                 }
             })
+    }
+
+    const handleSignup = (publicKey, protectedKey) => {
+        setLoading(true)
+        setError("")
+        setStatus("")
+
+        initLoadingInterval()
+
+        sendSignup(publicKey, protectedKey)
     }
 
     const _renderProgress = _ => {
