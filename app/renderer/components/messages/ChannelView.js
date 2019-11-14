@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react"
 
-import { connect } from 'react-redux'
+import { connect } from "react-redux"
+import { withTheme, useTheme } from "@material-ui/core"
+
+import { encrypt } from "../../util/crypto"
+import { authReq } from "../../customAxios"
 
 import Message from "./Message"
 
-import axios from "axios"
+import { TextField, Button, CircularProgress } from "@material-ui/core"
 
-import { TextField, Button, CircularProgress, withTheme, useTheme } from "@material-ui/core"
-
-import { encrypt } from '../util/crypto'
-
-const Messages = props => {
+const ChannelView = props => {
     const theme = useTheme()
 
     const [formMessage, setMessage] = useState("")
     const [sending, setSending] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
 
     const currentChannel = props.channels.channels[props.channels.activeChannel]
 
@@ -30,29 +30,23 @@ const Messages = props => {
 
         setSending(true)
 
-        axios.post("https://servicetechlink.com/message/create", JSON.stringify({
+        authReq(props.user.token).post("https://servicetechlink.com/message/create", JSON.stringify({
             channelID: currentChannel._id,
             message: encrypt(JSON.stringify({
                 content: formMessage,
                 sender: props.user.username
             }), currentChannel.AESKey)
-        }), {
-            headers: {
-                'Accept': "application/json",
-                "Authorization": props.user.token,
-                "Content-Type": "application/json"
-            }
-        })
-            .then(data => {
+        }))
+            .then(_data => {
                 setSending(false)
                 setMessage("")
             })
     }
 
     const handleKeyPress = event => {
-        if(!event) event = window.event
+        if(!event) return
 
-        let keyCode = event.keyCode || event.which
+        const keyCode = event.keyCode || event.which
 
         if(keyCode === 13 && !loading) {
             sendMessage()
@@ -111,7 +105,7 @@ const Messages = props => {
                 { <Button style = {{ height: 56 }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
             </div>
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {
@@ -121,4 +115,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {  })(withTheme(Messages))
+export default connect(mapStateToProps, {  })(withTheme(ChannelView))

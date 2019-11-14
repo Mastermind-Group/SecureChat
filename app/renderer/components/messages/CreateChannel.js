@@ -1,9 +1,12 @@
 import React, { useState } from "react"
 
 import { connect } from "react-redux"
+import { withTheme, useTheme } from "@material-ui/core"
 
-import { FiPlus, FiMinusCircle } from 'react-icons/fi'
+import axios, { authReq } from "../../customAxios"
+import { publicEncrypt, randomBytes } from "crypto"
 
+import { FiPlus, FiMinusCircle } from "react-icons/fi"
 import {
     Dialog,
     DialogTitle,
@@ -21,13 +24,7 @@ import {
     InputLabel,
     FormControl,
     makeStyles,
-    withTheme,
-    useTheme
 } from "@material-ui/core"
-
-import axios from "axios"
-
-import { publicEncrypt, randomBytes } from "crypto"
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -37,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
-}));
+}))
 
 const CreateChannel = props => {
     const theme = useTheme()
@@ -63,33 +60,27 @@ const CreateChannel = props => {
     const createChannel = _ => {
         setLoading(true)
 
-        let secureString = randomBytes(64).toString("hex")
+        const secureString = randomBytes(64).toString("hex")
 
-        let privateKeys = {}
+        const privateKeys = {}
 
         newUsers.forEach(user => {
-            let encryptedKey = publicEncrypt(user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
+            const encryptedKey = publicEncrypt(user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
 
             privateKeys[user._id] = encryptedKey
         })
 
-        let encrypted = publicEncrypt(props.user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
+        const encrypted = publicEncrypt(props.user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
 
         privateKeys[props.user._id] = encrypted
 
-        let channelObj = {
+        const channelObj = {
             name: channelName,
             privateKeys
         }
 
-        axios.post("https://servicetechlink.com/channel/create", JSON.stringify(channelObj), {
-            headers: {
-                'Accept': "application/json",
-                "Authorization": props.user.token,
-                "Content-Type": "application/json"
-            }
-        })
-            .then(data => {
+        authReq(props.user.token).post("https://servicetechlink.com/channel/create", JSON.stringify(channelObj))
+            .then(_data => {
                 setLoading(false)
                 setOpen(false)
             })
@@ -100,11 +91,11 @@ const CreateChannel = props => {
             .then(data => {
                 setFound(data.data.results)
             })
-            .catch(err => { })
+            .catch(_err => { })
     }
 
     const handleRemoveUser = userIndex => {
-        setUsers(newUsers.filter((user, index) => index !== userIndex))
+        setUsers(newUsers.filter((_user, index) => index !== userIndex))
     }
 
     const handleAddUser = user => {

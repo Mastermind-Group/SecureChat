@@ -1,16 +1,11 @@
 import axios from "axios"
 
-axios.defaults.adapter = require('axios/lib/adapters/http');
-
-const customAdapter = require('axios/lib/adapters/http');
-
-export const adapter = _ => axios.create({
-    //adapter: customAdapter
-})
-
-export const authReq = () => axios.create({ 
+export const authReq = token => axios.create({ 
     headers: {
-        'Content-Type': "application/json",
-        'Authorization': localStorage.getItem("token")
+        "Content-Type": "application/json",
+        "Authorization": token,
+        "Accept": "application/json"
     } 
 })
+
+export default axios

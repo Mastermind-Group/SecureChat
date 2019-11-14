@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react"
 
+import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import { connect } from "react-redux"
 import { setUser } from "../actions/userActions"
 
-import { TextField, Button, LinearProgress, CircularProgress } from "@material-ui/core"
-
 import axios from "axios"
+
+import {
+    TextField,
+    Button,
+    LinearProgress,
+    CircularProgress
+} from "@material-ui/core"
 
 let interval = null
 
@@ -22,8 +27,7 @@ const Login = props => {
     const [percentage, setPercentage] = useState(0)
 
     useEffect(_ => {
-        //clearInterval(interval)
-        if(props.user && props.user.token && props.user.token.length > 10) {
+        if (props.user && props.user.token && props.user.token.length > 10) {
             props.history.push("/messages")
         }
 
@@ -38,23 +42,26 @@ const Login = props => {
         setForm({ ...form, [name]: value.replace(" ", "") })
     }
 
-    const handleSubmit = event => {
-        event.preventDefault()
-
+    const resetValues = _ => {
         setPercentage(0)
+    }
 
-        if(form.username === "") {
+    const validForm = _ => {
+        if (form.username === "") {
             setError("Username can't be blank")
-            return
+            return false
         }
 
-        if(form.password === "") {
+        if (form.password === "") {
             setError("Password can't be blank")
-            return
+            return false
         }
 
-        setLoading(true)
-        let startTime = new Date().getTime()
+        return true
+    }
+
+    const initLoadingInterval = _ => {
+        const startTime = new Date().getTime()
         let endTime = new Date()
 
         endTime.setSeconds(endTime.getSeconds() + 7)
@@ -62,14 +69,15 @@ const Login = props => {
         endTime = endTime.getTime()
 
         interval = setInterval(_ => {
-            let newTime = new Date().getTime() - startTime
+            const newTime = new Date().getTime() - startTime
 
-            let percentage = newTime * 100 / (endTime - startTime)
+            const percentage = newTime * 100 / (endTime - startTime)
 
             setPercentage(percentage)
         }, 20)
-        setError("")
+    }
 
+    const sendLogin = _ => {
         axios.post("https://servicetechlink.com/login", JSON.stringify(form), {
             headers: {
                 "Content-Type": "application/json",
@@ -84,47 +92,65 @@ const Login = props => {
             .catch(err => {
                 setLoading(false)
                 clearInterval(interval)
-                if(err.response) {
+                if (err.response) {
                     setError(err.response.data.message)
                 }
-                else if((err + "").includes("ECONNREFUSED")) {
+                else if ((err + "").includes("ECONNREFUSED")) {
                     setError("You dont have an internet connection or the server is down")
                 }
             })
     }
 
-    const _renderProgress = _ => {
-        if(loading) {
-            return <LinearProgress 
-                        variant="determinate" 
-                        value={Math.min(parseInt(percentage), 100)} 
-                        style = {{ marginTop: 5 }}
-                    />
+    const handleSubmit = event => {
+        event.preventDefault()
+
+        resetValues()
+
+        if (!validForm()) {
+            return
         }
-        else return <></>
+
+        initLoadingInterval()
+
+        setLoading(true)
+        setError("")
+
+        sendLogin()
+    }
+
+    const _renderProgress = _ => {
+        if (loading) {
+            return (
+                <LinearProgress
+                    variant="determinate"
+                    value={Math.min(parseInt(percentage), 100)}
+                    style={{ marginTop: 5 }}
+                />
+            )
+        }
     }
 
     return (
-        <div style = {{ ...mainContainerStyle, backgroundColor: theme.palette.background.default }}>
-            <h2 style = {{ color: theme.palette.text.primary }}>Login</h2>
-            <form style = {formStyle} onSubmit = {handleSubmit}>
-                <TextField type = "text" name = "username" value = {form.username} onChange = {handleChange} label = "Username" />
-                <TextField style = {{ marginTop: 25, marginBottom: 40 }} type = "password" name = "password" value = {form.password} onChange = {handleChange} label = "Password" />
+        <div style={{ ...mainContainerStyle, backgroundColor: theme.palette.background.default }}>
+            <h2 style={{ color: theme.palette.text.primary }}>Login</h2>
+            <form style={formStyle} onSubmit={handleSubmit}>
+                <TextField type="text" name="username" value={form.username} onChange={handleChange} label="Username" />
+                <TextField style={{ marginTop: 25, marginBottom: 40 }} type="password" name="password" value={form.password} onChange={handleChange} label="Password" />
 
-                <Button variant = "contained" color = "primary" type = "submit" style = {{ height: 36 }} disabled = {loading} >
-                    { loading ? <CircularProgress size = {17} /> : "Log in" }
+                <Button variant="contained" color="primary" type="submit" style={{ height: 36 }} disabled={loading} >
+                    {loading ? <CircularProgress size={17} /> : "Log in"}
                 </Button>
 
-                { _renderProgress() }
+                {_renderProgress()}
 
-                { loading && <h5 style = {{ color: theme.palette.text.primary }}>Note: login can take a long time, this is because we are hashing your password with 17 rounds</h5> }
+                {loading && <h5 style={{ color: theme.palette.text.primary }}>Note: Login can take a while</h5>}
 
-                <span style = {{ color: "red" }}>{error}</span>
+                <span style={{ color: "red" }}>{error}</span>
 
-                <h5 style = {{ color: theme.palette.text.primary }}>Don't have an account? <Button style = {{ fontSize: 12 }} variant = "text" color = "primary" onClick = {_ => props.history.push("/register")}>Sign up!</Button></h5>
+                <h5 style={{ color: theme.palette.text.primary }}>Dont have an account? <Button style={{ fontSize: 12 }} variant="text" color="primary" onClick={_ => props.history.push("/register")}>Sign up!</Button></h5>
             </form>
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

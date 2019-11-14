@@ -1,39 +1,60 @@
-import React, { useEffect } from 'react'
-
-import { Switch, Route, withRouter } from "react-router-dom"
+import React, { useEffect } from "react"
 
 import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+
 import { loadUser } from "./actions/userActions"
 import { setWebsocketStatus } from "./actions/connectionActions"
 import { getThemes } from "./actions/themeActions"
 
-import Header from "./components/Header"
+import storage from "electron-json-storage"
+import websocket from "ws"
+import { 
+    WebsocketOpen, 
+    WebsocketMessage, 
+    WebsocketError, 
+    WebsocketClose 
+} from "./websocket/ws-redux-connect"
 
+import Header from "./components/Header"
 import Login from "./components/Login"
 import Register from "./components/Register"
-import MessagesView from "./components/MessagesView"
+import MessagesView from "./components/messages/Container"
 import Settings from "./components/Settings"
 
 import { MuiThemeProvider } from "@material-ui/core/styles"
-
-import storage from "electron-json-storage"
-
-import fs from "fs"
-
-import websocket from "ws"
-
-import { WebsocketOpen, WebsocketMessage, WebsocketError, WebsocketClose } from "./websocket/ws-redux-connect"
+import { Switch, Route } from "react-router-dom"
 
 let client = null
 
-function isAuthed(pathname) {
-    return pathname !== "/" && pathname !== "/login" && pathname !== "/register"
+function connectWebsocket(token) {
+    client = new websocket("wss://servicetechlink.com/ws", {
+        headers: {
+            "Authorization": token
+        }
+    })
+
+    client.onopen = WebsocketOpen
+
+    client.onmessage = message => {
+        const parsed = JSON.parse(message.data)
+        WebsocketMessage(parsed)
+    }
+
+    client.onerror = err => {
+        WebsocketError(err)
+    }
+
+    client.onclose = _ => {
+        WebsocketClose()
+        client = null
+    }
 }
 
 const Routes = props => {
 
     useEffect(_ => {
-        storage.get("userData", (err, data) => {
+        storage.get("userData", (_err, data) => {
             if(data.token && data.token.length > 10) {
                 const user = { ...data }
                 props.loadUser(user)
@@ -44,40 +65,9 @@ const Routes = props => {
     }, [])
 
     useEffect(_ => {
-        const pathname = props.history.location.pathname
-
-        if(!props.user.token || props.user.token.length < 10) {
-
-        } else {
+        if(props.user.token && props.user.token.length > 10) {
             if(!client && props.connection.serverConnected) {
-                function connectWebsocket() {
-                    let error = null
-                    client = new websocket("wss://servicetechlink.com/ws", {
-                        headers: {
-                            "Authorization": props.user.token
-                        }
-                    })
-    
-                    client.onopen = WebsocketOpen
-    
-                    client.onmessage = message => {
-                        const parsed = JSON.parse(message.data)
-                        WebsocketMessage(parsed)
-                    }
-    
-                    client.onerror = err => {
-                        error = err
-                        WebsocketError(err)
-                    }
-    
-                    client.onclose = _ => {
-                        WebsocketClose()
-                        client = null
-                    }
-                }
-    
-                connectWebsocket()
-                
+                connectWebsocket(props.user.token)
             } else if(client) {
                 client.close()
                 console.log("Websocket client closed")

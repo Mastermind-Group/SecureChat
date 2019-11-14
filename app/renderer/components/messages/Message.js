@@ -35,27 +35,27 @@ const Message = props => {
                 </div>
             </div>
         </>
-    );
+    )
 }
 
 export default Message
 
 function formatMessageTime(time) {
-    let date = new Date(time)
+    const date = new Date(time)
 
     let minute = date.getMinutes()
 
     if (minute <= 9) minute = "0" + minute
 
-    let ampm = date.getHours() <= 11 ? "AM" : "PM"
+    const ampm = date.getHours() <= 11 ? "AM" : "PM"
 
-    let hour = ampm === "AM" ? date.getHours() : date.getHours() - 12
+    const hour = ampm === "AM" ? date.getHours() : date.getHours() - 12
 
     return hour + ":" + minute + " " + ampm
 }
 
 function formatTime(date) {
-    let currentDate = new Date()
+    const currentDate = new Date()
 
     if(currentDate.getFullYear() === date.getFullYear() && currentDate.getMonth() === date.getMonth() && currentDate.getDate() === date.getDate()) {
         return formatMessageTime(date)

@@ -1,19 +1,18 @@
 import React from "react"
 
 import { connect } from "react-redux"
-
 import { withTheme, useTheme } from "@material-ui/core"
 
-import ChannelList from "./Channels"
-import Messages from "./Messages"
+import SidePanel from "./SidePanel"
+import ChannelView from "./ChannelView"
 
-export const MessagesView = props => {
+export const Container = props => {
     const theme = useTheme()
 
     const _renderContent = _ => {
-        let loading = props.channels.LOADING_CHANNELS
-        let notIn = !props.channels.LOADING_CHANNELS && props.channels.channels.length === 0
-        let click = !props.channels.LOADING_CHANNELS && props.channels.activeChannel === -1
+        const loading = props.channels.LOADING_CHANNELS
+        const notIn = !props.channels.LOADING_CHANNELS && props.channels.channels.length === 0
+        const click = !props.channels.LOADING_CHANNELS && props.channels.activeChannel === -1
 
         if(loading || notIn || click) {
             let message = ""
@@ -29,16 +28,16 @@ export const MessagesView = props => {
             )
         }
         else {
-            return <Messages />
+            return <ChannelView />
         }
     }
 
     return (
         <div style = {{ height: "100%", display: "flex", width: "100%" }}>
-            <ChannelList />
+            <SidePanel />
             { _renderContent() }
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {
@@ -48,4 +47,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {  })(withTheme(MessagesView))
+export default connect(mapStateToProps, {  })(withTheme(Container))

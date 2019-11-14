@@ -1,15 +1,15 @@
 import React, { useEffect } from "react"
 
 import { connect } from "react-redux"
-import { loadChannels, setActive } from "../actions/channelActions"
-
 import { withRouter } from "react-router-dom"
+import { withTheme, useTheme } from "@material-ui/core/styles"
+
+import { loadChannels, setActive } from "../../actions/channelActions"
 
 import Channel from "./Channel"
 import CreateChannel from "./CreateChannel"
 
 import { CircularProgress } from "@material-ui/core"
-import { withTheme, useTheme } from "@material-ui/core/styles"
 
 const SidePanel = props => {
     const theme = useTheme()
@@ -23,14 +23,14 @@ const SidePanel = props => {
     }
 
     const sortChannels = (c1, c2) => {
-        let c1Last = c1.messages[c1.messages.length - 1]
-        let c2Last = c2.messages[c2.messages.length - 1]
+        const c1Last = c1.messages[c1.messages.length - 1]
+        const c2Last = c2.messages[c2.messages.length - 1]
 
         if(!c1Last) return 1
         if(!c2Last) return -1
 
-        let c1Time = new Date(c1Last.Timestamp)
-        let c2Time = new Date(c2Last.Timestamp)
+        const c1Time = new Date(c1Last.Timestamp)
+        const c2Time = new Date(c2Last.Timestamp)
 
         return c2Time - c1Time
     }
@@ -61,7 +61,7 @@ const SidePanel = props => {
             
             <CreateChannel />
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

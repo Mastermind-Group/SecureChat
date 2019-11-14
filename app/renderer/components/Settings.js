@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react"
+/* eslint-disable react/display-name */
+import React, { useState } from "react"
 
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
+import { withTheme, useTheme } from "@material-ui/core"
 
 import Themes from "./Themes"
 
-import { List, ListItem, ListItemIcon, ListItemText, makeStyles, withTheme, useTheme } from "@material-ui/core"
-
 import { FiMessageCircle } from "react-icons/fi"
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: theme.palette.background.paper
-    },
-    selected: {
-        backgroundColor: theme.palette.primary.main
-    }
-  }));
+import { 
+    List, 
+    ListItem, 
+    ListItemIcon, 
+    ListItemText
+} from "@material-ui/core"
 
 const SettingsList = [
     {
@@ -35,7 +32,7 @@ const SettingsList = [
     },
 ]
 
-const SidePanel = props => {
+const SidePanel = _ => {
     const theme = useTheme()
 
     const [activePanel, setActive] = useState(SettingsList[0])
@@ -71,7 +68,7 @@ const SidePanel = props => {
                 { activePanel.view() }
             </div>
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

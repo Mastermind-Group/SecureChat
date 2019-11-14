@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from "react"
 
 import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { withTheme, useTheme } from "@material-ui/core"
+
 import { logout } from "../actions/userActions"
 import { setServerStatus } from "../actions/connectionActions"
 
-import { withRouter } from "react-router-dom"
+import axios from "axios"
 
+import { 
+    FiServer,
+    FiZap, 
+    FiZapOff, 
+    FiMenu, 
+    FiMessageCircle, 
+    FiSettings, 
+    FiLogOut, 
+    FiLock, 
+    FiClipboard 
+} from "react-icons/fi"
 import {
     Drawer,
     Divider,
@@ -14,13 +28,8 @@ import {
     ListItemIcon,
     ListItemText,
     makeStyles,
-    withTheme,
-    useTheme,
-} from '@material-ui/core';
-
-import axios from "axios"
-
-import { FiServer, FiMoon, FiZap, FiZapOff, FiMenu, FiMessageCircle, FiSettings, FiLogOut, FiLock, FiClipboard } from "react-icons/fi"
+    
+} from "@material-ui/core"
 
 let interval = null
 
@@ -29,13 +38,13 @@ const useStyles = makeStyles({
         width: 250,
     },
     fullList: {
-        width: 'auto',
+        width: "auto",
     },
-});
+})
 
 const Header = props => {
     const theme = useTheme()
-    const classes = useStyles();
+    const classes = useStyles()
 
     const [drawerOpen, setDrawer] = useState(false)
 
@@ -56,7 +65,7 @@ const Header = props => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(_err => {
                 if (props.connection.serverConnected) {
                     props.setServerStatus(false)
                 }
@@ -111,7 +120,7 @@ const Header = props => {
                     </ListItem>
                 </List>
             </div>
-        );
+        )
     }
 
     const handleLogout = _ => {
@@ -122,7 +131,7 @@ const Header = props => {
 
     const _renderMenu = _ => {
         if (props.user.token && props.user.token.length > 10) {
-            return <FiMenu size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />;
+            return <FiMenu size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />
         }
     }
 
