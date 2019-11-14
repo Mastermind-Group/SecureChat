@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import NodeRSA from "node-rsa"
+import { privateDecrypt } from "crypto"
 
 import { decrypt } from "../util/crypto"
 
@@ -73,9 +73,7 @@ export const addMessage = (message) => dispatch => {
 export function decyptChannel(user, channel, index) {
     const myKey = channel.PrivateKeys[user._id]
 
-    const RSAKey = new NodeRSA(user.privateKey, "pkcs8-private-pem")
-
-    const ChannelKey = RSAKey.decrypt(myKey, "utf8")
+    const ChannelKey = privateDecrypt(user.privateKey, Buffer.from(myKey, "base64"))
 
     let decryptedMessages = []
 
