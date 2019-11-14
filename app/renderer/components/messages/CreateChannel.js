@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { connect } from "react-redux"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import axios, { authReq } from "../customAxios"
+import axios, { authReq } from "../../customAxios"
 import { publicEncrypt, randomBytes } from "crypto"
 
 import { FiPlus, FiMinusCircle } from "react-icons/fi"

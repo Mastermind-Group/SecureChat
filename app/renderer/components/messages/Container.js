@@ -3,8 +3,8 @@ import React from "react"
 import { connect } from "react-redux"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import ChannelList from "./Channels"
-import Messages from "./Messages"
+import SidePanel from "./SidePanel"
+import ChannelView from "./ChannelView"
 
 export const MessagesView = props => {
     const theme = useTheme()
@@ -28,13 +28,13 @@ export const MessagesView = props => {
             )
         }
         else {
-            return <Messages />
+            return <ChannelView />
         }
     }
 
     return (
         <div style = {{ height: "100%", display: "flex", width: "100%" }}>
-            <ChannelList />
+            <SidePanel />
             { _renderContent() }
         </div>
     )

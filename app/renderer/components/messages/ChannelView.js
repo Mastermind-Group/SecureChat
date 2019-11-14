@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react"
 import { connect } from "react-redux"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import { encrypt } from "../util/crypto"
-import { authReq } from "../customAxios"
+import { encrypt } from "../../util/crypto"
+import { authReq } from "../../customAxios"
 
 import Message from "./Message"
 

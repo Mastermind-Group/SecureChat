@@ -19,7 +19,7 @@ import {
 import Header from "./components/Header"
 import Login from "./components/Login"
 import Register from "./components/Register"
-import MessagesView from "./components/MessagesView"
+import MessagesView from "./components/messages/Container"
 import Settings from "./components/Settings"
 
 import { MuiThemeProvider } from "@material-ui/core/styles"
