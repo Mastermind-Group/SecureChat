@@ -10,7 +10,7 @@ import Message from "./Message"
 
 import { TextField, Button, CircularProgress } from "@material-ui/core"
 
-const Messages = props => {
+const ChannelView = props => {
     const theme = useTheme()
 
     const [formMessage, setMessage] = useState("")
@@ -115,4 +115,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {  })(withTheme(Messages))
+export default connect(mapStateToProps, {  })(withTheme(ChannelView))

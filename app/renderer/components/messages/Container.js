@@ -6,7 +6,7 @@ import { withTheme, useTheme } from "@material-ui/core"
 import SidePanel from "./SidePanel"
 import ChannelView from "./ChannelView"
 
-export const MessagesView = props => {
+export const Container = props => {
     const theme = useTheme()
 
     const _renderContent = _ => {
@@ -47,4 +47,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {  })(withTheme(MessagesView))
+export default connect(mapStateToProps, {  })(withTheme(Container))
