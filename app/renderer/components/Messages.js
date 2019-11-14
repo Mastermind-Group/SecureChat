@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import Message from "./Message"
 
-import axios from "axios"
+import axios, { authReq } from "../customAxios"
 
 import { TextField, Button, CircularProgress, withTheme, useTheme } from "@material-ui/core"
 
@@ -30,19 +30,13 @@ const Messages = props => {
 
         setSending(true)
 
-        axios.post("https://servicetechlink.com/message/create", JSON.stringify({
+        authReq(props.user.token).post("https://servicetechlink.com/message/create", JSON.stringify({
             channelID: currentChannel._id,
             message: encrypt(JSON.stringify({
                 content: formMessage,
                 sender: props.user.username
             }), currentChannel.AESKey)
-        }), {
-            headers: {
-                'Accept': "application/json",
-                "Authorization": props.user.token,
-                "Content-Type": "application/json"
-            }
-        })
+        }))
             .then(data => {
                 setSending(false)
                 setMessage("")

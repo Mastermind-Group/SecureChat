@@ -25,7 +25,7 @@ import {
     useTheme
 } from "@material-ui/core"
 
-import axios from "axios"
+import axios, { authReq } from "../customAxios"
 
 import { publicEncrypt, randomBytes } from "crypto"
 
@@ -82,13 +82,7 @@ const CreateChannel = props => {
             privateKeys
         }
 
-        axios.post("https://servicetechlink.com/channel/create", JSON.stringify(channelObj), {
-            headers: {
-                'Accept': "application/json",
-                "Authorization": props.user.token,
-                "Content-Type": "application/json"
-            }
-        })
+        authReq(props.user.token).post("https://servicetechlink.com/channel/create", JSON.stringify(channelObj))
             .then(data => {
                 setLoading(false)
                 setOpen(false)

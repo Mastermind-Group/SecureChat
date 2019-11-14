@@ -1,4 +1,4 @@
-import axios from "axios"
+import { authReq } from "../customAxios"
 
 import { privateDecrypt } from "crypto"
 
@@ -14,18 +14,13 @@ export const ADD_MESSAGE = "ADD_MESSAGE"
 
 export const SET_LOAD_CHANNELS = ""
 
-export const loadChannels = (user) => dispatch => {
+export const loadChannels = user => dispatch => {
     dispatch({
         type: SET_LOAD_CHANNELS,
         isLoading: true
     })
 
-    axios.get("https://servicetechlink.com/channels/mine", {
-        headers: {
-            'Accept': "application/json",
-            'Authorization': user.token
-        }
-    })
+    authReq(user.token).get("https://servicetechlink.com/channels/mine")
         .then(data => {
             let channels = data.data.results
 
