@@ -27,9 +27,7 @@ import {
 
 import axios from "axios"
 
-import crypto from "crypto"
-
-import NodeRSA from "node-rsa"
+import { publicEncrypt, randomBytes } from "crypto"
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -65,21 +63,17 @@ const CreateChannel = props => {
     const createChannel = _ => {
         setLoading(true)
 
-        let secureString = crypto.randomBytes(64).toString("hex")
+        let secureString = randomBytes(64).toString("hex")
 
         let privateKeys = {}
 
         newUsers.forEach(user => {
-            let key = new NodeRSA(user.publicKey, "pkcs8-public-pem")
+            let encryptedKey = publicEncrypt(user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
 
-            let encrypted = key.encrypt(secureString, "base64")
-
-            privateKeys[user._id] = encrypted
+            privateKeys[user._id] = encryptedKey
         })
 
-        let key = new NodeRSA(props.user.publicKey, "pkcs8-public-pem")
-
-        let encrypted = key.encrypt(secureString, "base64")
+        let encrypted = publicEncrypt(props.user.publicKey, Buffer.from(secureString, "utf-8")).toString("base64")
 
         privateKeys[props.user._id] = encrypted
 

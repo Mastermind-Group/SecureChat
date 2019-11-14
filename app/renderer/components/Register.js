@@ -13,8 +13,6 @@ import ConfirmComp from "./ConfirmComp"
 
 import axios from "axios"
 
-import NodeRSA from "node-rsa"
-
 import utilCrypto from "../util/crypto"
 
 import { generateKeyPair } from "crypto"
