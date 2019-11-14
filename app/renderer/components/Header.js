@@ -1,11 +1,26 @@
 import React, { useEffect, useState } from "react"
 
 import { connect } from "react-redux"
+import { withRouter } from "react-router-dom"
+import { withTheme, useTheme } from "@material-ui/core"
+
 import { logout } from "../actions/userActions"
 import { setServerStatus } from "../actions/connectionActions"
 
-import { withRouter } from "react-router-dom"
+import axios from "axios"
 
+import { 
+    FiServer, 
+    FiMoon, 
+    FiZap, 
+    FiZapOff, 
+    FiMenu, 
+    FiMessageCircle, 
+    FiSettings, 
+    FiLogOut, 
+    FiLock, 
+    FiClipboard 
+} from "react-icons/fi"
 import {
     Drawer,
     Divider,
@@ -14,13 +29,8 @@ import {
     ListItemIcon,
     ListItemText,
     makeStyles,
-    withTheme,
-    useTheme,
+    
 } from '@material-ui/core';
-
-import axios from "axios"
-
-import { FiServer, FiMoon, FiZap, FiZapOff, FiMenu, FiMessageCircle, FiSettings, FiLogOut, FiLock, FiClipboard } from "react-icons/fi"
 
 let interval = null
 
@@ -31,11 +41,11 @@ const useStyles = makeStyles({
     fullList: {
         width: 'auto',
     },
-});
+})
 
 const Header = props => {
     const theme = useTheme()
-    const classes = useStyles();
+    const classes = useStyles()
 
     const [drawerOpen, setDrawer] = useState(false)
 
@@ -111,7 +121,7 @@ const Header = props => {
                     </ListItem>
                 </List>
             </div>
-        );
+        )
     }
 
     const handleLogout = _ => {

@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react"
 
+import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import { connect } from "react-redux"
 import { setUser } from "../actions/userActions"
 
-import { TextField, Button, LinearProgress, CircularProgress } from "@material-ui/core"
-
 import axios from "axios"
+
+import { 
+    TextField, 
+    Button, 
+    LinearProgress, 
+    CircularProgress 
+} from "@material-ui/core"
 
 let interval = null
 
@@ -124,7 +129,7 @@ const Login = props => {
                 <h5 style = {{ color: theme.palette.text.primary }}>Don't have an account? <Button style = {{ fontSize: 12 }} variant = "text" color = "primary" onClick = {_ => props.history.push("/register")}>Sign up!</Button></h5>
             </form>
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

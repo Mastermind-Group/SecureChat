@@ -1,7 +1,6 @@
 import React from "react"
 
 import { connect } from "react-redux"
-
 import { withTheme, useTheme } from "@material-ui/core"
 
 import ChannelList from "./Channels"
@@ -38,7 +37,7 @@ export const MessagesView = props => {
             <ChannelList />
             { _renderContent() }
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

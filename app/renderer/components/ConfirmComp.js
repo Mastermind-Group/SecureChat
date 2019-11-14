@@ -1,11 +1,9 @@
 import React from 'react';
-import { Dialog, DialogTitle, Button } from '@material-ui/core';
 
 import { FiX, FiCheck } from 'react-icons/fi'
+import { Dialog, DialogTitle, Button } from '@material-ui/core';
  
 export default props => {
-
-
   return (
     <Dialog open = {props.open}>
       <DialogTitle style = {{ fontWeight: "800 !important" }}>Warning!</DialogTitle>

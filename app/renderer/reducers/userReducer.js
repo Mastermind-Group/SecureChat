@@ -1,10 +1,7 @@
 import { SET_USER, LOAD_USER, LOGOUT } from "../actions/userActions"
 
 import { decrypt } from "../util/crypto"
-
 import storage from "electron-json-storage"
-
-import fs from "fs"
 
 const initialState = {}
 

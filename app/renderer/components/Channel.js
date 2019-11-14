@@ -1,6 +1,8 @@
 import React from "react"
 
-import { Card, withTheme, useTheme } from "@material-ui/core"
+import { withTheme, useTheme } from "@material-ui/core"
+
+import { Card } from "@material-ui/core"
 
 const Channel = props => {
     const theme = useTheme()
@@ -23,7 +25,7 @@ const Channel = props => {
             <h2 style={{ margin: "0 5px", color: props.isCurrent ? theme.palette.primary.contrastText : theme.palette.text.primary }}>{props.data.Name}</h2>
             {lastMessage !== "" && <p style={{ margin: "0 5px", marginLeft: 10, color: props.isCurrent ? theme.palette.primary.contrastText : theme.palette.text.primary }}>{sender}: {lastMessage}</p>}
         </Card>
-    );
+    )
 }
 
 export default withTheme(Channel)

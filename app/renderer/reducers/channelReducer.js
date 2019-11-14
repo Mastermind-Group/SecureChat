@@ -1,4 +1,11 @@
-import { LOAD_CHANNELS, ADD_CHANNEL, DELETE_CHANNEL, SET_ACTIVE, ADD_MESSAGE, SET_LOAD_CHANNELS } from "../actions/channelActions"
+import { 
+    LOAD_CHANNELS, 
+    ADD_CHANNEL, 
+    DELETE_CHANNEL, 
+    SET_ACTIVE, 
+    ADD_MESSAGE, 
+    SET_LOAD_CHANNELS 
+} from "../actions/channelActions"
 
 import { decrypt } from "../util/crypto"
 

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from "react"
 
 import { connect } from "react-redux"
-import { setUser } from "../actions/userActions"
-
 import { withRouter } from 'react-router-dom'
-
 import { withTheme, useTheme } from "@material-ui/core"
 
-import { TextField, Button, CircularProgress, LinearProgress } from "@material-ui/core"
+import { setUser } from "../actions/userActions"
+
+import axios from "axios"
+import utilCrypto from "../util/crypto"
+import { generateKeyPair } from "crypto"
 
 import ConfirmComp from "./ConfirmComp"
 
-import axios from "axios"
-
-import utilCrypto from "../util/crypto"
-
-import { generateKeyPair } from "crypto"
+import { 
+    TextField, 
+    Button, 
+    CircularProgress, 
+    LinearProgress 
+} from "@material-ui/core"
 
 let interval = null
 
@@ -113,7 +115,7 @@ const Register = props => {
                 setGenerating(false)
 
                 handleRegistrationReq(publicKey, protectedKey)
-            });
+            })
         } else {
             const protectedKey = utilCrypto.encrypt(keys.privateKey, form.password)
 
@@ -217,7 +219,7 @@ const Register = props => {
                 </form>
             </div>
         </>
-    );
+    )
 }
 
 const mapStateToProps = state => {

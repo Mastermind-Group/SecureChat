@@ -1,17 +1,12 @@
 import { authReq } from "../customAxios"
-
 import { privateDecrypt } from "crypto"
-
 import { decrypt } from "../util/crypto"
 
 export const LOAD_CHANNELS = "LOAD_CHANNELS"
 export const ADD_CHANNEL = "ADD_CHANNEL"
 export const DELETE_CHANNEL = "DELETE_CHANNEL"
-
 export const SET_ACTIVE = "SET_ACTIVE"
-
 export const ADD_MESSAGE = "ADD_MESSAGE"
-
 export const SET_LOAD_CHANNELS = ""
 
 export const loadChannels = user => dispatch => {
@@ -32,7 +27,6 @@ export const loadChannels = user => dispatch => {
                 isLoading: false
             })
         })
-    
 }
 
 export const addChannel = (user, channel) => dispatch => {

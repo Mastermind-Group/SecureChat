@@ -1,15 +1,15 @@
 import React, { useEffect } from "react"
 
 import { connect } from "react-redux"
-import { loadChannels, setActive } from "../actions/channelActions"
-
 import { withRouter } from "react-router-dom"
+import { withTheme, useTheme } from "@material-ui/core/styles"
+
+import { loadChannels, setActive } from "../actions/channelActions"
 
 import Channel from "./Channel"
 import CreateChannel from "./CreateChannel"
 
 import { CircularProgress } from "@material-ui/core"
-import { withTheme, useTheme } from "@material-ui/core/styles"
 
 const SidePanel = props => {
     const theme = useTheme()
@@ -61,7 +61,7 @@ const SidePanel = props => {
             
             <CreateChannel />
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

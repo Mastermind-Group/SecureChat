@@ -1,9 +1,12 @@
 import React, { useState } from "react"
 
 import { connect } from "react-redux"
+import { withTheme, useTheme } from "@material-ui/core"
+
+import axios, { authReq } from "../customAxios"
+import { publicEncrypt, randomBytes } from "crypto"
 
 import { FiPlus, FiMinusCircle } from 'react-icons/fi'
-
 import {
     Dialog,
     DialogTitle,
@@ -21,13 +24,7 @@ import {
     InputLabel,
     FormControl,
     makeStyles,
-    withTheme,
-    useTheme
 } from "@material-ui/core"
-
-import axios, { authReq } from "../customAxios"
-
-import { publicEncrypt, randomBytes } from "crypto"
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -37,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
-}));
+}))
 
 const CreateChannel = props => {
     const theme = useTheme()

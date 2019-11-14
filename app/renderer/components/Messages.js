@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react"
 
 import { connect } from 'react-redux'
+import { withTheme, useTheme } from "@material-ui/core"
+
+import { encrypt } from '../util/crypto'
+import { authReq } from "../customAxios"
 
 import Message from "./Message"
 
-import axios, { authReq } from "../customAxios"
-
-import { TextField, Button, CircularProgress, withTheme, useTheme } from "@material-ui/core"
-
-import { encrypt } from '../util/crypto'
+import { TextField, Button, CircularProgress } from "@material-ui/core"
 
 const Messages = props => {
     const theme = useTheme()
@@ -105,7 +105,7 @@ const Messages = props => {
                 { <Button style = {{ height: 56 }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
             </div>
         </div>
-    );
+    )
 }
 
 const mapStateToProps = state => {

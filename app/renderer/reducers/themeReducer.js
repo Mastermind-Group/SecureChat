@@ -1,8 +1,7 @@
 import { GET_THEMES, CHANGE_THEME } from "../actions/themeActions"
 
-import { createMuiTheme } from "@material-ui/core/styles"
-
 import storage from "electron-json-storage"
+import { createMuiTheme } from "@material-ui/core/styles"
 
 const defaultTheme = createMuiTheme()
 
