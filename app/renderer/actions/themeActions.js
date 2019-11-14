@@ -5,7 +5,7 @@ import storage from "electron-json-storage"
 import { createMuiTheme } from "@material-ui/core"
 
 export const getThemes = _ => dispatch => {
-    storage.get("theme", (err, data) => {
+    storage.get("theme", (_err, data) => {
         if(Object.entries(data).length === 0 && data.constructor === Object)
             dispatch({
                 type: GET_THEMES,

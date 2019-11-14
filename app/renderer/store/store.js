@@ -18,9 +18,9 @@ const rootReducer = combineReducers({
     theme: themeReducer
 })
 
-const initialState = {};
+const initialState = {}
 
-const middleware = [thunk];
+const middleware = [thunk]
 
 //const hasWindow = typeof window === "object";
 //const composeEnhancers = (hasWindow && window.__REDUX_DEVTOOLS_EXTENSION__ ) || compose;
@@ -34,4 +34,4 @@ const Store = createStore(
     )
 )
 
-export default Store;
+export default Store

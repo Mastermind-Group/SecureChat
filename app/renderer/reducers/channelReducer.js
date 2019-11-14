@@ -19,7 +19,7 @@ export default function(state = initialState, action) {
     switch(action.type) {
         case LOAD_CHANNELS: 
             return { ...state, channels: action.channels, LOADING_CHANNELS: false }
-        case ADD_CHANNEL:
+        case ADD_CHANNEL: {
             const newChannel = {
                 ...action.channel,
                 index: state.channels.length
@@ -28,11 +28,12 @@ export default function(state = initialState, action) {
             const newChannelsArr = [...state.channels, newChannel]
 
             return { ...state, channels: newChannelsArr }
+        }
         case DELETE_CHANNEL: 
-            return {};
+            return {}
         case SET_ACTIVE:
             return { ...state, activeChannel: action.channelIndex }
-        case ADD_MESSAGE:
+        case ADD_MESSAGE: {
             const newChannels = [...state.channels]
 
             for(let i in newChannels) {
@@ -43,9 +44,10 @@ export default function(state = initialState, action) {
             }
 
             return { ...state, channels: newChannels }
+        }
         case SET_LOAD_CHANNELS:
             return { ...state, LOADING_CHANNELS: action.isLoading }
         default: 
-            return state;
+            return state
     }
 }

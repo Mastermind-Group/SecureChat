@@ -15,7 +15,7 @@ const Channel = props => {
 
         sender = lastMessage.sender
 
-        let message = cutChars(15, lastMessage.content)
+        const message = cutChars(15, lastMessage.content)
 
         lastMessage = message.newString + (message.continued ? "..." : "")
     }

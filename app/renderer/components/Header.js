@@ -10,8 +10,7 @@ import { setServerStatus } from "../actions/connectionActions"
 import axios from "axios"
 
 import { 
-    FiServer, 
-    FiMoon, 
+    FiServer,
     FiZap, 
     FiZapOff, 
     FiMenu, 
@@ -30,7 +29,7 @@ import {
     ListItemText,
     makeStyles,
     
-} from '@material-ui/core';
+} from "@material-ui/core"
 
 let interval = null
 
@@ -39,7 +38,7 @@ const useStyles = makeStyles({
         width: 250,
     },
     fullList: {
-        width: 'auto',
+        width: "auto",
     },
 })
 
@@ -66,7 +65,7 @@ const Header = props => {
                     }
                 }
             })
-            .catch(err => {
+            .catch(_err => {
                 if (props.connection.serverConnected) {
                     props.setServerStatus(false)
                 }
@@ -132,7 +131,7 @@ const Header = props => {
 
     const _renderMenu = _ => {
         if (props.user.token && props.user.token.length > 10) {
-            return <FiMenu size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />;
+            return <FiMenu size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />
         }
     }
 

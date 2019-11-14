@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 
-import { connect } from 'react-redux'
+import { connect } from "react-redux"
 import { withTheme, useTheme } from "@material-ui/core"
 
-import { encrypt } from '../util/crypto'
+import { encrypt } from "../util/crypto"
 import { authReq } from "../customAxios"
 
 import Message from "./Message"
@@ -15,7 +15,7 @@ const Messages = props => {
 
     const [formMessage, setMessage] = useState("")
     const [sending, setSending] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading] = useState(false)
 
     const currentChannel = props.channels.channels[props.channels.activeChannel]
 
@@ -37,16 +37,16 @@ const Messages = props => {
                 sender: props.user.username
             }), currentChannel.AESKey)
         }))
-            .then(data => {
+            .then(_data => {
                 setSending(false)
                 setMessage("")
             })
     }
 
     const handleKeyPress = event => {
-        if(!event) event = window.event
+        if(!event) return
 
-        let keyCode = event.keyCode || event.which
+        const keyCode = event.keyCode || event.which
 
         if(keyCode === 13 && !loading) {
             sendMessage()

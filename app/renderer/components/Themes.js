@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 import { connect } from "react-redux"
 
@@ -8,8 +8,6 @@ import { Switch } from "@material-ui/core"
 import { ChromePicker } from "react-color"
 
 const Theme = props => {
-    const [darkMode, setDark] = useState(props.theme.currentTheme.palette.type)
-
     const handlePrimaryChange = ({ hex }) => {
         props.changeTheme({
             palette: {

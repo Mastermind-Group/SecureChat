@@ -59,7 +59,7 @@ const Login = props => {
         }
 
         setLoading(true)
-        let startTime = new Date().getTime()
+        const startTime = new Date().getTime()
         let endTime = new Date()
 
         endTime.setSeconds(endTime.getSeconds() + 7)
@@ -67,9 +67,9 @@ const Login = props => {
         endTime = endTime.getTime()
 
         interval = setInterval(_ => {
-            let newTime = new Date().getTime() - startTime
+            const newTime = new Date().getTime() - startTime
 
-            let percentage = newTime * 100 / (endTime - startTime)
+            const percentage = newTime * 100 / (endTime - startTime)
 
             setPercentage(percentage)
         }, 20)
@@ -126,7 +126,7 @@ const Login = props => {
 
                 <span style = {{ color: "red" }}>{error}</span>
 
-                <h5 style = {{ color: theme.palette.text.primary }}>Don't have an account? <Button style = {{ fontSize: 12 }} variant = "text" color = "primary" onClick = {_ => props.history.push("/register")}>Sign up!</Button></h5>
+                <h5 style = {{ color: theme.palette.text.primary }}>Dont have an account? <Button style = {{ fontSize: 12 }} variant = "text" color = "primary" onClick = {_ => props.history.push("/register")}>Sign up!</Button></h5>
             </form>
         </div>
     )

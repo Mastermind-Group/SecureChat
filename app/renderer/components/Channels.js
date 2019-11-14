@@ -23,14 +23,14 @@ const SidePanel = props => {
     }
 
     const sortChannels = (c1, c2) => {
-        let c1Last = c1.messages[c1.messages.length - 1]
-        let c2Last = c2.messages[c2.messages.length - 1]
+        const c1Last = c1.messages[c1.messages.length - 1]
+        const c2Last = c2.messages[c2.messages.length - 1]
 
         if(!c1Last) return 1
         if(!c2Last) return -1
 
-        let c1Time = new Date(c1Last.Timestamp)
-        let c2Time = new Date(c2Last.Timestamp)
+        const c1Time = new Date(c1Last.Timestamp)
+        const c2Time = new Date(c2Last.Timestamp)
 
         return c2Time - c1Time
     }

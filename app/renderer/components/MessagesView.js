@@ -10,9 +10,9 @@ export const MessagesView = props => {
     const theme = useTheme()
 
     const _renderContent = _ => {
-        let loading = props.channels.LOADING_CHANNELS
-        let notIn = !props.channels.LOADING_CHANNELS && props.channels.channels.length === 0
-        let click = !props.channels.LOADING_CHANNELS && props.channels.activeChannel === -1
+        const loading = props.channels.LOADING_CHANNELS
+        const notIn = !props.channels.LOADING_CHANNELS && props.channels.channels.length === 0
+        const click = !props.channels.LOADING_CHANNELS && props.channels.activeChannel === -1
 
         if(loading || notIn || click) {
             let message = ""

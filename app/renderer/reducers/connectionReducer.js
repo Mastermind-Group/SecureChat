@@ -12,6 +12,6 @@ export default function(state = initialState, action) {
         case WEBSOCKET_STATUS:
             return { ...state, websocketConnected: action.status }
         default: 
-            return state;
+            return state
     }
 }

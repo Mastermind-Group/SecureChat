@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 
 import { connect } from "react-redux"
-import { withRouter } from 'react-router-dom'
+import { withRouter } from "react-router-dom"
 import { withTheme, useTheme } from "@material-ui/core"
 
 import { setUser } from "../actions/userActions"
@@ -91,17 +91,17 @@ const Register = props => {
             privateKey = keys.privateKey
 
         if (publicKey === "") {
-            generateKeyPair('rsa', {
+            generateKeyPair("rsa", {
                 modulusLength: 4096,
                 publicKeyEncoding: {
-                    type: 'spki',
-                    format: 'pem'
+                    type: "spki",
+                    format: "pem"
                 },
                 privateKeyEncoding: {
-                    type: 'pkcs8',
-                    format: 'pem',
+                    type: "pkcs8",
+                    format: "pem",
                 }
-            }, (err, publicKey2, privateKey2) => {
+            }, (_err, publicKey2, privateKey2) => {
                 publicKey = publicKey2
                 privateKey = privateKey2
 
@@ -222,7 +222,7 @@ const Register = props => {
     )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = _state => {
     return {
 
     }

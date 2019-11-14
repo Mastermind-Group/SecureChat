@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { useState } from "react"
 
 import { connect } from "react-redux"
@@ -11,18 +12,8 @@ import {
     List, 
     ListItem, 
     ListItemIcon, 
-    ListItemText, 
-    makeStyles, 
+    ListItemText
 } from "@material-ui/core"
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        backgroundColor: theme.palette.background.paper
-    },
-    selected: {
-        backgroundColor: theme.palette.primary.main
-    }
-  }))
 
 const SettingsList = [
     {
@@ -41,7 +32,7 @@ const SettingsList = [
     },
 ]
 
-const SidePanel = props => {
+const SidePanel = _ => {
     const theme = useTheme()
 
     const [activePanel, setActive] = useState(SettingsList[0])
