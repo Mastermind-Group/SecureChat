@@ -130,7 +130,7 @@ const Register = props => {
         setError("")
         setStatus("")
 
-        let startTime = new Date().getTime()
+        const startTime = new Date().getTime()
         let endTime = new Date()
 
         endTime.setSeconds(endTime.getSeconds() + 7)
@@ -138,9 +138,9 @@ const Register = props => {
         endTime = endTime.getTime()
 
         interval = setInterval(_ => {
-            let newTime = new Date().getTime() - startTime
+            const newTime = new Date().getTime() - startTime
 
-            let percentage = newTime * 100 / (endTime - startTime)
+            const percentage = newTime * 100 / (endTime - startTime)
 
             setPercentage(percentage)
         }, 20)
