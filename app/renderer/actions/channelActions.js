@@ -19,6 +19,8 @@ export const loadChannels = user => dispatch => {
         .then(data => {
             let channels = data.data.results
 
+            console.log(channels)
+
             channels = channels.map((channel, index) => decyptChannel(user, channel, index))
 
             dispatch({
@@ -72,11 +74,13 @@ export function decyptChannel(user, channel, index) {
         })
     }
 
+    console.log(channel)
+
     return {
         _id: channel._id,
         Name: channel.Name,
-        privateKeys: channel.privateKeys,
-        AESKey: ChannelKey,
+        privateKeys: channel.PrivateKeys,
+        AESKey: ChannelKey.toString("utf8"),
         index,
         messages: decryptedMessages
     }
