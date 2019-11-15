@@ -6,15 +6,9 @@ import { withRouter } from "react-router-dom"
 import { loadUser } from "./actions/userActions"
 import { setWebsocketStatus } from "./actions/connectionActions"
 import { getThemes } from "./actions/themeActions"
+import { openWebsocket, closeWebsocket } from "./actions/socketActions"
 
 import storage from "electron-json-storage"
-import websocket from "ws"
-import { 
-    WebsocketOpen, 
-    WebsocketMessage, 
-    WebsocketError, 
-    WebsocketClose 
-} from "./websocket/ws-redux-connect"
 
 import Header from "./components/Header"
 import Login from "./components/Login"
@@ -24,32 +18,6 @@ import Settings from "./components/Settings"
 
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import { Switch, Route } from "react-router-dom"
-
-let client = null
-
-function connectWebsocket(token) {
-    client = new websocket("wss://servicetechlink.com/ws", {
-        headers: {
-            "Authorization": token
-        }
-    })
-
-    client.onopen = WebsocketOpen
-
-    client.onmessage = message => {
-        const parsed = JSON.parse(message.data)
-        WebsocketMessage(parsed)
-    }
-
-    client.onerror = err => {
-        WebsocketError(err)
-    }
-
-    client.onclose = _ => {
-        WebsocketClose()
-        client = null
-    }
-}
 
 const Routes = props => {
 
@@ -61,27 +29,18 @@ const Routes = props => {
                 props.history.push("/messages")
             }
         })
+        
         props.getThemes()
+
+        return _ => {
+            props.closeWebsocket()
+        }
     }, [])
 
     useEffect(_ => {
-        if(props.user.token && props.user.token.length > 10) {
-            if(!client && props.connection.serverConnected) {
-                connectWebsocket(props.user.token)
-            } else if(client) {
-                client.close()
-                console.log("Websocket client closed")
-                client = null
-            }
+        if(props.user.token && props.user.token.length > 10 && !props.websocket && props.connection.serverConnected) {
+            props.openWebsocket(props.user.token)
         }
-
-        return _ => {
-            if(client) {
-                WebsocketClose()
-                client = null
-            }
-        }
-
     }, [props.history, props.user, props.connection.serverConnected, props.channels.channels.length])
 
     return (
@@ -109,8 +68,17 @@ const mapStateToProps = state => {
         user: state.user,
         connection: state.connection,
         channels: state.channels,
-        theme: state.theme
+        theme: state.theme,
+        websocket: state.websocket.websocket
     }
 }
 
-export default connect(mapStateToProps, { loadUser, setWebsocketStatus, getThemes })(withRouter(Routes))
+const actions = {
+    loadUser, 
+    setWebsocketStatus, 
+    getThemes, 
+    openWebsocket,
+    closeWebsocket
+}
+
+export default connect(mapStateToProps, actions)(withRouter(Routes))

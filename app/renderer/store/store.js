@@ -9,13 +9,15 @@ import thunk from "redux-thunk"
 import userReducer from "../reducers/userReducer"
 import channelReducer from "../reducers/channelReducer"
 import connectionReducer from "../reducers/connectionReducer"
+import socketReducer from "../reducers/socketReducer"
 import themeReducer from "../reducers/themeReducer"
 
 const rootReducer = combineReducers({
     user: userReducer,
     channels: channelReducer,
     connection: connectionReducer,
-    theme: themeReducer
+    theme: themeReducer,
+    websocket: socketReducer
 })
 
 const initialState = {}

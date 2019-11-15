@@ -7,6 +7,16 @@ export const handleMessage = message => {
 
     const isAway = !document.hasFocus()
 
+    if(!message.MessageType || !message.MessageContent) {
+        console.error("Invalid message received: message type or message content is not defined")
+        return
+    }
+
+    if(typeof message.MessageType !== "string" || typeof message.MessageContent !== "object") {
+        console.error("Invalid message received: message type is not a string or message content is not an object")
+        return
+    }
+
     switch(message.MessageType) {
         case "NEW_MESSAGE":
             store.dispatch(addMessage(message.MessageContent))
