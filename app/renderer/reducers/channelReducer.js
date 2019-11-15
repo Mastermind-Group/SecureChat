@@ -5,7 +5,9 @@ import {
     DELETE_CHANNEL, 
     SET_ACTIVE, 
     ADD_MESSAGE, 
-    SET_LOAD_CHANNELS 
+    SET_LOAD_CHANNELS,
+    ADD_TYPER,
+    REMOVE_TYPER
 } from "../actions/channelActions"
 
 import { decrypt } from "../util/crypto"
@@ -48,6 +50,28 @@ export default function(state = initialState, action) {
         }
         case SET_LOAD_CHANNELS:
             return { ...state, LOADING_CHANNELS: action.isLoading }
+        case ADD_TYPER: {
+            const newChannels = [...state.channels]
+
+            for(let i in newChannels) {
+                if(newChannels[i]._id === action.typer.ChannelID) {
+                    newChannels[i].typers[action.typer.WhoTypingUsername] = action.typer
+                }
+            }
+
+            return { ...state, channels: newChannels }
+        }
+        case REMOVE_TYPER: {
+            const newChannels = [...state.channels]
+
+            for(let i in newChannels) {
+                if(newChannels[i]._id === action.typer.ChannelID) {
+                    delete newChannels[i].typers[action.typer.WhoTypingUsername]
+                }
+            }
+
+            return { ...state, channels: newChannels }
+        }
         default: 
             return state
     }

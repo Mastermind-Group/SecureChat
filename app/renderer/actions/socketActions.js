@@ -1,4 +1,5 @@
 export const OPEN_WEBSOCKET = "OPEN_WEBSOCKET"
+export const SEND_DATA = "SEND_DATA"
 export const CLOSE_WEBSOCKET = "CLOSE_WEBSOCKET"
 
 import { WEBSOCKET_STATUS } from "./connectionActions"
@@ -51,6 +52,15 @@ export const openWebsocket = token => dispatch => {
     dispatch({
         type: OPEN_WEBSOCKET,
         websocket: client
+    })
+}
+
+export const sendData = data => dispatch => {
+    console.log("Sending data", data)
+    
+    dispatch({
+        type: SEND_DATA,
+        data
     })
 }
 
