@@ -10,7 +10,12 @@ import { authReq } from "../../customAxios"
 
 import Message from "./Message"
 
-import { TextField, Button, CircularProgress } from "@material-ui/core"
+import { 
+    TextField, 
+    Button, 
+    CircularProgress, 
+    Divider 
+} from "@material-ui/core"
 
 let lastSend = null
 const typingDurationSafety = 3000
@@ -149,8 +154,8 @@ const ChannelView = props => {
             <div style = {{ flex: "1 1 auto", display: "flex", flexDirection: "column", overflowY: "auto" }} id = "message-scroll-here">
                 { _renderMessages() }
             </div>
-            
-            <div style = {{ display: "flex", flexDirection: "column", justifyContent: "center", backgroundColor: theme.palette.background.default }}>
+            <Divider />
+            <div style = {{ display: "flex", flexDirection: "column", justifyContent: "center", backgroundColor: theme.palette.background.default, marginTop: 15 }}>
                 <div style = {{ display: "flex", alignItems: "center", backgroundColor: theme.palette.background.default, margin: "0 15px" }}>
                     <TextField 
                         style = {{ flex: 1, padding: 0 }} 

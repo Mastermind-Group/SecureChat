@@ -2,7 +2,7 @@ import store from "../store/store"
 
 import { addMessage, addChannel, addTyper, removeTyper } from "../actions/channelActions"
 
-let timeout = null
+const timeouts = {}
 
 export const handleMessage = message => {
     console.log(message)
@@ -42,13 +42,23 @@ export const handleMessage = message => {
             }
 
             break
-        case "IS_TYPING":
-            clearTimeout(timeout)
+        case "IS_TYPING": {
+            const channel = message.MessageContent.ChannelID
+            const person = message.MessageContent.WhoTypingID
+
+            if(timeouts[channel] && timeouts[channel][person]) {
+                clearTimeout(timeouts[channel][person])
+            }
 
             store.dispatch(addTyper(message.MessageContent))
-            timeout = setTimeout(_ => store.dispatch(removeTyper(message.MessageContent)), 3500)
+
+            timeouts[channel] = {
+                ...timeouts[channel],
+                [person]: setTimeout(_ => store.dispatch(removeTyper(message.MessageContent)), 3500)
+            }
             
             break
+        }
         default:
             console.log("NO_CASE")
     }
