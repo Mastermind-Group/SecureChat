@@ -1,6 +1,8 @@
 import store from "../store/store"
 
-import { addMessage, addChannel } from "../actions/channelActions"
+import { addMessage, addChannel, addTyper, removeTyper } from "../actions/channelActions"
+
+let timeout = null
 
 export const handleMessage = message => {
     console.log(message)
@@ -39,6 +41,13 @@ export const handleMessage = message => {
                 })
             }
 
+            break
+        case "IS_TYPING":
+            clearTimeout(timeout)
+
+            store.dispatch(addTyper(message.MessageContent))
+            timeout = setTimeout(_ => store.dispatch(removeTyper(message.MessageContent)), 3500)
+            
             break
         default:
             console.log("NO_CASE")

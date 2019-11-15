@@ -7,7 +7,9 @@ export const ADD_CHANNEL = "ADD_CHANNEL"
 export const DELETE_CHANNEL = "DELETE_CHANNEL"
 export const SET_ACTIVE = "SET_ACTIVE"
 export const ADD_MESSAGE = "ADD_MESSAGE"
-export const SET_LOAD_CHANNELS = ""
+export const SET_LOAD_CHANNELS = "SET_LOAD_CHANNELS"
+export const ADD_TYPER = "ADD_TYPER"
+export const REMOVE_TYPER = "REMOVE_TYPER"
 
 export const loadChannels = user => dispatch => {
     dispatch({
@@ -61,6 +63,20 @@ export const addMessage = (message) => dispatch => {
     })
 }
 
+export const addTyper = typer => dispatch => {
+    dispatch({
+        type: ADD_TYPER,
+        typer
+    })
+}
+
+export const removeTyper = typer => dispatch => {
+    dispatch({
+        type: REMOVE_TYPER,
+        typer
+    })
+}
+
 export function decyptChannel(user, channel, index) {
     const myKey = channel.PrivateKeys[user._id]
 
@@ -82,6 +98,7 @@ export function decyptChannel(user, channel, index) {
         privateKeys: channel.PrivateKeys,
         AESKey: ChannelKey.toString("utf8"),
         index,
-        messages: decryptedMessages
+        messages: decryptedMessages,
+        typers: {}
     }
 }

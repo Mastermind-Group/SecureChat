@@ -24,6 +24,22 @@ const ChannelView = props => {
 
     const currentChannel = props.channels.channels[props.channels.activeChannel]
     const users = Object.keys(currentChannel.privateKeys).map(key => key)
+    const typers = Object.keys(currentChannel.typers).map(key => currentChannel.typers[key])
+    let typingText = " "
+
+    if(typers.length > 3) {
+        typingText = "Multiple people are typing"
+    }
+    else if(typers.length > 1) {
+        for(let i of typers) {
+            typingText += i.WhoTypingUsername + ", "
+        }
+
+        typingText += "are typing"
+    }
+    else if(typers.length === 1) {
+        typingText = typers[0].WhoTypingUsername + " is typing"
+    }
 
     useEffect(_ => {
         lastSend = null
@@ -133,16 +149,20 @@ const ChannelView = props => {
             <div style = {{ flex: "1 1 auto", display: "flex", flexDirection: "column", overflowY: "auto" }} id = "message-scroll-here">
                 { _renderMessages() }
             </div>
-            <div style = {{ display: "flex", alignItems: "center", backgroundColor: theme.palette.background.default }}>
-                <TextField 
-                    style = {{ flex: 1, padding: 0 }} 
-                    label = {"Message " + currentChannel.Name}
-                    variant = "outlined" 
-                    value = {formMessage} 
-                    onChange = {event => setMessage(event.target.value)} 
-                    onKeyDown = {handleKeyPress}
-                />
-                { <Button style = {{ height: 56 }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
+            
+            <div style = {{ display: "flex", flexDirection: "column", justifyContent: "center", backgroundColor: theme.palette.background.default }}>
+                <div style = {{ display: "flex", alignItems: "center", backgroundColor: theme.palette.background.default, margin: "0 15px" }}>
+                    <TextField 
+                        style = {{ flex: 1, padding: 0 }} 
+                        label = {"Message " + currentChannel.Name}
+                        variant = "outlined" 
+                        value = {formMessage} 
+                        onChange = {event => setMessage(event.target.value)} 
+                        onKeyDown = {handleKeyPress}
+                    />
+                    { <Button style = {{ height: 56 }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
+                </div>
+                <h6 style = {{ margin: 0, marginLeft: 15, color: theme.palette.text.primary, minHeight: 15 }}>{typingText}</h6>
             </div>
         </div>
     )
