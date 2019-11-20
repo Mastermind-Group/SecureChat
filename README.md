@@ -22,10 +22,10 @@ You may fork this project and make pull requests whenever you want. Please make 
 
 1. git clone https://github.com/Mastermind-Group/SecureChat.git
 2. cd into the new folder
-3. yarn develop
+3. run `yarn develop`
 
 ## To build
 
-* Windows: yarn pack:win
-* MacOS:   yarn pack:mac
-* Linux:   yarn pack:linux
+* Windows: `yarn pack:win`
+* MacOS:   `yarn pack:mac`
+* Linux:   `yarn pack:linux`
