@@ -7,6 +7,8 @@ import { withTheme, useTheme } from "@material-ui/core"
 import { setUser } from "../actions/userActions"
 
 import axios from "axios"
+import storage from "electron-json-storage"
+import { decrypt } from "../util/crypto"
 
 import {
     TextField,
@@ -86,8 +88,24 @@ const Login = props => {
         })
             .then(data => {
                 clearInterval(interval)
-                props.setUser(data.data.user, data.data.token, form.password)
-                props.history.push("/messages")
+
+                storage.get("protectedKeys", (err, keys) => {
+                    if(err) console.error(err)
+                    else {
+                        const myKey = keys[data.data.user._id]
+
+                        if(!myKey) {
+                            props.setUser(data.data.user, "IMPORT", data.data.token, form.password)
+                            props.history.push("/importKey")
+                        }
+                        else {
+                            const privateKey = decrypt(myKey, form.password)
+
+                            props.setUser(data.data.user, privateKey, data.data.token, form.password)
+                            props.history.push("/messages")
+                        }
+                    }
+                })
             })
             .catch(err => {
                 setLoading(false)

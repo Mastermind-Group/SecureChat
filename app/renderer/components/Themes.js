@@ -31,7 +31,6 @@ const Theme = props => {
     }
 
     const changeDarkMode = _ => {
-        console.log(props.theme.currentTheme.palette)
         props.changeTheme({
             palette: {
                 primary: props.theme.currentTheme.palette.primary,

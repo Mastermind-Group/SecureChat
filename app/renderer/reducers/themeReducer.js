@@ -22,7 +22,7 @@ export default function(state = initialState, action) {
 
             timeout = setTimeout(_ => {
                 storage.set("theme", newTheme, (err) => {
-                    console.log(err)
+                    console.error(err)
                 })
             }, 1000)
 

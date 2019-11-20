@@ -3,18 +3,20 @@ import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
 
-import { loadUser } from "./actions/userActions"
+import { loadUser, setUser } from "./actions/userActions"
 import { setWebsocketStatus } from "./actions/connectionActions"
 import { getThemes } from "./actions/themeActions"
 import { openWebsocket, closeWebsocket } from "./actions/socketActions"
 
 import storage from "electron-json-storage"
+import { decrypt } from "./util/crypto"
 
 import Header from "./components/Header"
 import Login from "./components/Login"
 import Register from "./components/Register"
 import MessagesView from "./components/messages/Container"
 import Settings from "./components/Settings"
+import ImportKey from "./components/ImportKey"
 
 import { MuiThemeProvider } from "@material-ui/core/styles"
 import { Switch, Route } from "react-router-dom"
@@ -25,6 +27,25 @@ const Routes = props => {
         storage.get("userData", (_err, data) => {
             if(data.token && data.token.length > 10) {
                 const user = { ...data }
+
+                storage.get("protectedKeys", (err, keys) => {
+                    if(err) console.error(err)
+                    else {
+                        const myKey = keys[user._id]
+
+                        if(!myKey) {
+                            props.setUser(user, "IMPORT", user.token, user.password)
+                            props.history.push("/importKey")
+                        }
+                        else {
+                            const privateKey = decrypt(myKey, user.password)
+
+                            props.setUser(user, privateKey, user.token, user.password)
+                            props.history.push("/messages")
+                        }
+                    }
+                })
+
                 props.loadUser(user)
                 props.history.push("/messages")
             }
@@ -56,6 +77,8 @@ const Routes = props => {
 
                         <Route exact path = "/messages" component = {MessagesView} />
                         <Route exact path = "/settings" component = {Settings} />
+
+                        <Route exact path = "/importKey" component = {ImportKey} />
                     </Switch>
                 </div>
             </div>
@@ -75,6 +98,7 @@ const mapStateToProps = state => {
 
 const actions = {
     loadUser, 
+    setUser,
     setWebsocketStatus, 
     getThemes, 
     openWebsocket,

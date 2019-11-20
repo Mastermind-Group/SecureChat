@@ -9,6 +9,7 @@ import { setUser } from "../actions/userActions"
 import axios from "axios"
 import utilCrypto from "../util/crypto"
 import { generateKeyPair } from "crypto"
+import storage from "electron-json-storage"
 
 import ConfirmComp from "./ConfirmComp"
 
@@ -110,7 +111,7 @@ const Register = props => {
 
             setGenerating(false)
 
-            handleSignup(publicKey, protectedKey)
+            handleSignup(publicKey, privateKey, protectedKey)
         })
     }
 
@@ -125,7 +126,7 @@ const Register = props => {
 
             setGenerating(false)
 
-            handleSignup(keys.publicKey, protectedKey)
+            handleSignup(keys.publicKey, keys.privateKey, protectedKey)
         }
     }
 
@@ -145,12 +146,11 @@ const Register = props => {
         }, 20)
     }
 
-    const sendSignup = (publicKey, protectedKey) => {
+    const sendSignup = (publicKey, privateKey, protectedKey) => {
         axios.post("https://servicetechlink.com/register", JSON.stringify({
             username: form.username,
             password: form.password,
             publicKey,
-            protectedKey: protectedKey
         }), {
             headers: {
                 "Content-Type": "application/json",
@@ -159,7 +159,18 @@ const Register = props => {
         })
             .then(data => {
                 clearInterval(interval)
-                props.setUser(data.data.user, data.data.token, form.password)
+                props.setUser(data.data.user, privateKey, data.data.token, form.password)
+
+                storage.get("protectedKeys", (err, keys) => {
+                    if(err) {
+                        console.error(err)
+                    }
+
+                    storage.set("protectedKeys", { ...keys, [data.data.user._id]: protectedKey }, err => {
+                        if(err) console.error(err)
+                    })
+                })
+
                 props.history.push("/messages")
             })
             .catch(err => {
@@ -175,14 +186,14 @@ const Register = props => {
             })
     }
 
-    const handleSignup = (publicKey, protectedKey) => {
+    const handleSignup = (publicKey, privateKey, protectedKey) => {
         setLoading(true)
         setError("")
         setStatus("")
 
         initLoadingInterval()
 
-        sendSignup(publicKey, protectedKey)
+        sendSignup(publicKey, privateKey, protectedKey)
     }
 
     const _renderProgress = _ => {
