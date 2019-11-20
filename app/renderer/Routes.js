@@ -41,7 +41,7 @@ const Routes = props => {
                             const privateKey = decrypt(myKey, user.password)
 
                             props.setUser(user, privateKey, user.token, user.password)
-                            props.history.push("/settings")
+                            props.history.push("/messages")
                         }
                     }
                 })
