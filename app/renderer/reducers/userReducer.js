@@ -14,14 +14,14 @@ export default function(state = initialState, action) {
                 username: user.username,
                 password,
                 publicKey: user.publicKey,
-                privateKey: action.privateKey,
+                //privateKey: action.privateKey,
                 protectedKey: user.protectedKey,
                 token: action.token
             }
 
             storage.set("userData", userState)
             
-            return userState
+            return { ...userState, privateKey: action.privateKey }
         }
         case LOAD_USER:
             return { ...action.user }

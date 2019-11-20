@@ -25,7 +25,7 @@ const Routes = props => {
 
     useEffect(_ => {
         storage.get("userData", (_err, data) => {
-            if(data.token && data.token.length > 10) {
+            if(data && data.token && data.token.length > 10) {
                 const user = { ...data }
 
                 storage.get("protectedKeys", (err, keys) => {

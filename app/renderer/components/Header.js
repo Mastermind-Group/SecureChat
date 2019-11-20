@@ -6,6 +6,7 @@ import { withTheme, useTheme } from "@material-ui/core"
 
 import { logout } from "../actions/userActions"
 import { setServerStatus } from "../actions/connectionActions"
+import { closeWebsocket } from "../actions/socketActions"
 
 import axios from "axios"
 
@@ -135,6 +136,7 @@ const Header = props => {
     const handleLogout = _ => {
         setDrawer(false)
         props.logout()
+        props.closeWebsocket()
         props.history.push("/login")
     }
 
@@ -190,7 +192,7 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { logout, setServerStatus })(withRouter(withTheme(Header)))
+export default connect(mapStateToProps, { logout, setServerStatus, closeWebsocket })(withRouter(withTheme(Header)))
 
 const containerStyle = {
     display: "flex",
