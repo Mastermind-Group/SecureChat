@@ -108,7 +108,7 @@ const FileImport = props => {
     const [valid, setValid] = useState(false)
     const [err, setError] = useState("")
 
-    const handleFileChange = event => {
+    const handleFileChange = _ => {
         setImportedData({})
         setValid(false)
         setError("")

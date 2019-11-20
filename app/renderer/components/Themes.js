@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 
 import { changeTheme } from "../actions/themeActions"
 
-import { Switch } from "@material-ui/core"
+import { Switch, Divider } from "@material-ui/core"
 import { ChromePicker } from "react-color"
 
 const Theme = props => {
@@ -40,21 +40,35 @@ const Theme = props => {
         })
     }
 
+    const contrastText = props.theme.currentTheme.palette.getContrastText(props.theme.currentTheme.palette.background.default)
+
     return (
-        <>
+        <div style = {{ flex: "1 1 auto", display: "flex", flexDirection: "column", overflowY: "auto" }}>
+            <div style = {divStyle}>
+                <h3 style = {titleStyle(contrastText)}>Primary Color</h3>
+                <ChromePicker
+                    color={props.theme.currentTheme.palette.primary.main}
+                    onChangeComplete={handlePrimaryChange}
+                />
+            </div>
 
-            <ChromePicker
-                color={props.theme.currentTheme.palette.primary.main}
-                onChangeComplete={handlePrimaryChange}
-            />
+            <Divider />
 
-            <ChromePicker
-                color={props.theme.currentTheme.palette.secondary.main}
-                onChangeComplete={handleSecondaryChange}
-            />
+            <div style = {divStyle}>
+                <h3 style = {titleStyle(contrastText)}>Secondary Color</h3>
+                <ChromePicker
+                    color={props.theme.currentTheme.palette.secondary.main}
+                    onChangeComplete={handleSecondaryChange}
+                />
+            </div>
 
-            <Switch value = {props.theme.currentTheme.palette.type !== "dark"} onChange = {changeDarkMode} />
-        </>
+            <Divider />
+
+            <div style = {divStyle}>
+                <h3 style = {titleStyle(contrastText)}>Toggle Dark Mode</h3>
+                <Switch value = {props.theme.currentTheme.palette.type !== "dark"} onChange = {changeDarkMode} />
+            </div>
+        </div>
     )
 }
 
@@ -65,3 +79,11 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, { changeTheme })(Theme)
+
+const divStyle = {
+    padding: 15
+}
+
+const titleStyle = (contrast) => ({
+    color: contrast
+})

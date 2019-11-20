@@ -6,8 +6,9 @@ import { withRouter } from "react-router-dom"
 import { withTheme, useTheme } from "@material-ui/core"
 
 import Themes from "./Themes"
+import Security from "./Security"
 
-import { FiMessageCircle } from "react-icons/fi"
+import { FaComments, FaPalette, FaShieldAlt } from "react-icons/fa"
 import { 
     List, 
     ListItem, 
@@ -17,15 +18,22 @@ import {
 
 const SettingsList = [
     {
+        name: "Security",
+        icon: props => <FaShieldAlt {...props} />,
+        view: props => <Security {...props} />,
+        props : {},
+        style: { cursor: "pointer" }
+    },
+    {
         name: "Themes",
-        icon: props => <FiMessageCircle {...props} />,
+        icon: props => <FaPalette {...props} />,
         view: props => <Themes {...props} />,
         props : {},
         style: { cursor: "pointer" }
     },
     {
         name: "Chat preferences",
-        icon: props => <FiMessageCircle {...props} />,
+        icon: props => <FaComments {...props} />,
         view: <></>,
         props: { disabled: true },
         style: { }
@@ -47,7 +55,7 @@ const SidePanel = _ => {
 
                             const background = isActive ? theme.palette.primary.main : ""
 
-                            const textColor = isActive ? theme.palette.primary.contrastText : ""
+                            const textColor = isActive ? theme.palette.primary.contrastText : theme.palette.getContrastText(theme.palette.background.paper)
 
                             const newStyles = {
                                 ...panel.style,
