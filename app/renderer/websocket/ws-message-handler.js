@@ -60,6 +60,6 @@ export const handleMessage = message => {
             break
         }
         default:
-            console.log("NO_CASE")
+            console.error("NO_CASE")
     }
 }

@@ -1,6 +1,5 @@
 import { SET_USER, LOAD_USER, LOGOUT } from "../actions/userActions"
 
-import { decrypt } from "../util/crypto"
 import storage from "electron-json-storage"
 
 const initialState = {}
@@ -10,21 +9,19 @@ export default function(state = initialState, action) {
         case SET_USER: {
             const { user, password } = action
 
-            const privateKey = decrypt(user.protectedKey, password)
-
             const userState = {
                 _id: user._id,
                 username: user.username,
                 password,
                 publicKey: user.publicKey,
-                privateKey,
+                //privateKey: action.privateKey,
                 protectedKey: user.protectedKey,
                 token: action.token
             }
 
             storage.set("userData", userState)
             
-            return userState
+            return { ...userState, privateKey: action.privateKey }
         }
         case LOAD_USER:
             return { ...action.user }

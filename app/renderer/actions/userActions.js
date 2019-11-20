@@ -2,10 +2,11 @@ export const SET_USER = "SET_USER"
 export const LOAD_USER = "LOAD_USER"
 export const LOGOUT = "LOGOUT"
 
-export const setUser = (user, token, password) => dispatch => {
+export const setUser = (user, privateKey, token, password) => dispatch => {
     dispatch({
         type: SET_USER,
         user,
+        privateKey,
         token,
         password
     })
