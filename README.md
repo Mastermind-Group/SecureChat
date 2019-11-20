@@ -10,10 +10,22 @@ After downloading the app you may register an account. When this happens your co
 
 ### "Wait but the code IS sending the private key to the server!!"
 
-At the moment in order to help you login from any computer we are encrypting your private key with your password for your account. So that way when you successfully log in you can just decrypt the private key and use it to get your channel passwords. Currently we have plans to move away from this system because this means you have to trust the server more and we want to minimize the amount of trust you have to give
+Not really. We were sending the private key to the server in an earlier build and to be fair it was encrypted with the user's password. Now the private keys only exist on your computer. If you want to login from a different device, you must export your key from your account and then import the key after logging in on the new device. Currently you may only do this by getting the file onto your computer somehow but in a future release you will be able to do so over a network.
 
 ## Development
 
 ### How can I help develop this app?
 
 You may fork this project and make pull requests whenever you want. Please make sure you follow the style guides provided so that our code can be consistent and clean
+
+## To start
+
+1. git clone https://github.com/Mastermind-Group/SecureChat.git
+2. cd into the new folder
+3. yarn develop
+
+## To build
+
+* Windows: yarn pack:win
+* MacOS:   yarn pack:mac
+* Linux:   yarn pack:linux
