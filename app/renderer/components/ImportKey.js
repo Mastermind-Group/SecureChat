@@ -41,7 +41,7 @@ const ImportKey = props => {
                 return console.error("The protected key already exists for this account")
             }
 
-            storage.set("protectedKeys", { ...keys, [importedData._id]: importedData.privateKey }, err => {
+            storage.set("protectedKeys", { ...keys, [importedData._id]: importedData.protectedKey }, err => {
                 if(err) {
                     return console.error(err)
                 }
