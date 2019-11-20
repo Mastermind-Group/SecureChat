@@ -210,6 +210,7 @@ const Register = props => {
     return (
         <>
             <ConfirmComp
+                title = "Warning!"
                 text={["You may want to store your password in a password manager or write it down, there is no way to reset your password.",
                     "Registering may take a long time on slower computers, and the program may become unresponsive for a while"]}
                 open={isOpen}

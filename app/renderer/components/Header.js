@@ -9,17 +9,16 @@ import { setServerStatus } from "../actions/connectionActions"
 
 import axios from "axios"
 
-import { 
-    FiServer,
-    FiZap, 
-    FiZapOff, 
-    FiMenu, 
-    FiMessageCircle, 
-    FiSettings, 
-    FiLogOut, 
-    FiLock, 
-    FiClipboard 
-} from "react-icons/fi"
+import {
+    FaServer,
+    FaBolt,
+    FaComments,
+    FaLock,
+    FaFileAlt,
+    FaCog,
+    FaSignOutAlt,
+    FaBars
+} from "react-icons/fa"
 import {
     Drawer,
     Divider,
@@ -94,28 +93,38 @@ const Header = props => {
                 <h2 style = {{ paddingLeft: 16 }}>{props.user.username}</h2>
                 <Divider />
                 <List>
-                    <ListItem button={!isActiveMessages} style={{ backgroundColor: getActiveBackground(isActiveMessages) }} onClick = {_ => props.history.push("/messages")}>
-                        <ListItemIcon><FiMessageCircle size={23} color = {getActiveColor(isActiveMessages)}  /></ListItemIcon>
+                    <ListItem 
+                        button={!isActiveMessages} 
+                        style={{ backgroundColor: getActiveBackground(isActiveMessages) }} 
+                        onClick = {_ => props.history.push("/messages")}
+                        disabled = {props.user.privateKey === "IMPORT"}
+                    >
+                        <ListItemIcon><FaComments size={23} color = {getActiveColor(isActiveMessages)}  /></ListItemIcon>
                         <ListItemText primary = "Messages" style = {{ color: getActiveColor(isActiveMessages) }} />
                     </ListItem>
                     <ListItem button disabled>
-                        <ListItemIcon><FiLock size={23}  /></ListItemIcon>
+                        <ListItemIcon><FaLock size={23}  /></ListItemIcon>
                         <ListItemText primary = "Passwords" />
                     </ListItem>
                     <ListItem button disabled>
-                        <ListItemIcon><FiClipboard size={23} /></ListItemIcon>
+                        <ListItemIcon><FaFileAlt size={23} /></ListItemIcon>
                         <ListItemText primary = "Notes" />
                     </ListItem>
                 </List>
                 <Divider />
                 <List>
-                    <ListItem button={!isActiveSettings} style={{ backgroundColor: getActiveBackground(isActiveSettings) }} onClick = {_ => props.history.push("/settings")}>
-                        <ListItemIcon><FiSettings size={23} color = {getActiveColor(isActiveSettings)}  /></ListItemIcon>
+                    <ListItem 
+                        button={!isActiveSettings} 
+                        style={{ backgroundColor: getActiveBackground(isActiveSettings) }} 
+                        onClick = {_ => props.history.push("/settings")}
+                        disabled = {props.user.privateKey === "IMPORT"}
+                    >
+                        <ListItemIcon><FaCog size={23} color = {getActiveColor(isActiveSettings)}  /></ListItemIcon>
                         <ListItemText primary = "Settings" style = {{ color: getActiveColor(isActiveSettings) }} />
                     </ListItem>
 
                     <ListItem button={true} onClick = {_ => handleLogout()}>
-                        <ListItemIcon><FiLogOut size={23} /></ListItemIcon>
+                        <ListItemIcon><FaSignOutAlt size={23} /></ListItemIcon>
                         <ListItemText primary = "Logout" />
                     </ListItem>
                 </List>
@@ -131,7 +140,7 @@ const Header = props => {
 
     const _renderMenu = _ => {
         if (props.user.token && props.user.token.length > 10) {
-            return <FiMenu size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />
+            return <FaBars size={23} onClick={_ => setDrawer(true)} style = {{ cursor: "pointer", marginLeft: 15, color: theme.palette.text.primary }} />
         }
     }
 
@@ -153,14 +162,14 @@ const Header = props => {
 
                 {
                     props.connection.serverConnected ?
-                        <FiServer color={theme.palette.primary.main} size={23} title="Server is running" /> :
-                        <FiServer color="red" size={23} title="Server is down" />
+                        <FaServer color={theme.palette.primary.main} size={23} title="Server is running" /> :
+                        <FaServer color="red" size={23} title="Server is down" />
                 }
                 <h2 style={{ margin: "0 5px" }}> </h2>
                 {
                     props.connection.websocketConnected ?
-                        <FiZap color={theme.palette.primary.main} size={23} title="Websocket is open" /> :
-                        <FiZapOff color="red" size={23} title="Websocket is closed" />
+                        <FaBolt color={theme.palette.primary.main} size={23} title="Websocket is open" /> :
+                        <FaBolt color="red" size={23} title="Websocket is closed" />
                 }
             </div>
         </div>
