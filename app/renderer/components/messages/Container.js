@@ -1,13 +1,35 @@
 import React from "react"
 
 import { connect } from "react-redux"
-import { withTheme, useTheme } from "@material-ui/core"
+import { withTheme, useTheme, makeStyles } from "@material-ui/core"
 
 import SidePanel from "./SidePanel"
 import ChannelView from "./ChannelView"
 
+const useStyles = makeStyles({
+    container: {
+        height: "100%",
+        display: "flex", 
+        width: "100%"
+    },
+    viewContainer: ({ theme }) => ({
+        flex: 1, 
+        display: "flex", 
+        flexDirection: "column", 
+        height: "100%", 
+        backgroundColor: theme.palette.background.default,
+
+        "& h1": {
+            textAlign: "center", 
+            margin: "auto",
+            color: theme.palette.text.primary, 
+        }
+    })
+})
+
 export const Container = props => {
     const theme = useTheme()
+    const styles = useStyles({ theme })
 
     const _renderContent = _ => {
         const loading = props.channels.LOADING_CHANNELS
@@ -22,8 +44,8 @@ export const Container = props => {
             else if(click) message = "Click on a channel"
 
             return (
-                <div style = {{ flex: 1, display: "flex", flexDirection: "column", height: "100%", backgroundColor: theme.palette.background.default }}>
-                    <h1 style = {{ color: theme.palette.text.primary, textAlign: "center", margin: "auto" }}>{message}</h1>
+                <div className = {styles.viewContainer}>
+                    <h1>{message}</h1>
                 </div>
             )
         }
@@ -33,7 +55,7 @@ export const Container = props => {
     }
 
     return (
-        <div style = {{ height: "100%", display: "flex", width: "100%" }}>
+        <div className = {styles.container}>
             <SidePanel />
             { _renderContent() }
         </div>

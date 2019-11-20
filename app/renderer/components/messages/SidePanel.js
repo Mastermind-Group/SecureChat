@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, Fragment } from "react"
 
 import { connect } from "react-redux"
 import { withRouter } from "react-router-dom"
@@ -9,10 +9,29 @@ import { loadChannels, setActive } from "../../actions/channelActions"
 import Channel from "./Channel"
 import CreateChannel from "./CreateChannel"
 
-import { CircularProgress } from "@material-ui/core"
+import { CircularProgress, makeStyles, Divider } from "@material-ui/core"
+
+const useStyles = makeStyles({
+    container: ({ theme }) => ({
+        width: "20%", 
+        maxWidth: 400, 
+        overflowY: "auto", 
+        height: "100%",
+        backgroundColor: theme.palette.background.paper, 
+    }),
+    loadingContainer: {
+        display: "flex", 
+        justifyContent: "center", 
+        margin: "15px 0"
+    },
+    divider: ({ theme }) => ({
+        backgroundColor: theme.palette.background.default
+    })
+})
 
 const SidePanel = props => {
     const theme = useTheme()
+    const styles = useStyles({ theme })
 
     useEffect(_ => {
         reload()
@@ -38,14 +57,17 @@ const SidePanel = props => {
     const _renderChannels = _ => {
         if (props.channels.LOADING_CHANNELS) {
             return (
-                <div style={{ display: "flex", justifyContent: "center", margin: "15px 0" }}>
+                <div className = {styles.loadingContainer}>
                     <CircularProgress size={17} />
                 </div>
             )
         }
         else {
             return props.channels.channels.slice().sort(sortChannels).map(e =>
-                <Channel key={e._id} data={e} setActive={setActive} isCurrent={props.channels.activeChannel === e.index} />
+                <Fragment key={e._id}>
+                    <Channel data={e} setActive={setActive} isCurrent={props.channels.activeChannel === e.index} />
+                    <Divider className = {styles.divider} />
+                </Fragment>
             )
         }
     }
@@ -56,7 +78,7 @@ const SidePanel = props => {
     }
 
     return (
-        <div style={{ width: "20%", maxWidth: 200, backgroundColor: theme.palette.background.paper, overflowY: "auto", height: "100%" }}>
+        <div className = {styles.container}>
             {_renderChannels()}
             
             <CreateChannel />
