@@ -35,17 +35,23 @@ const ChannelView = props => {
     if(typers.length > 3) {
         typingText = "Multiple people are typing"
     }
-    else if(typers.length > 1) {
-        for(let i of typers) {
-            typingText += i.WhoTypingUsername + ", "
-        }
-
-        typingText += "are typing"
-    }
     else if(typers.length === 1) {
         typingText = typers[0].WhoTypingUsername + " is typing"
     }
+    else if(typers.length === 2) {
+        typingText = typers[0].WhoTypingUsername + " and " + typers[1].WhoTypingUsername + " are typing"
+    }
+    else if(typers.length > 2) {
+        for(let i of typers) {
+            typingText += i.WhoTypingUsername
 
+            if(i !== typers[typers.length - 1]) {
+                typingText += ", "
+            }
+        }
+
+        typingText += " are typing"
+    }
     useEffect(_ => {
         lastSend = null
 
@@ -158,14 +164,14 @@ const ChannelView = props => {
             <div style = {{ display: "flex", flexDirection: "column", justifyContent: "center", backgroundColor: theme.palette.background.default, marginTop: 15 }}>
                 <div style = {{ display: "flex", alignItems: "center", backgroundColor: theme.palette.background.default, margin: "0 15px" }}>
                     <TextField 
-                        style = {{ flex: 1, padding: 0 }} 
+                        style = {{ flex: 1, padding: 0, borderRadius: "4px 0 0 4px" }} 
                         label = {"Message " + currentChannel.Name}
                         variant = "outlined" 
                         value = {formMessage} 
                         onChange = {event => setMessage(event.target.value)} 
                         onKeyDown = {handleKeyPress}
                     />
-                    { <Button style = {{ height: 56 }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
+                    { <Button style = {{ height: 56, borderRadius: "0 4px 4px 0" }} color = "primary" variant = "contained" onClick = {sendMessage} disabled = {sending}>Send</Button>}
                 </div>
                 <h6 style = {{ margin: 0, marginLeft: 15, color: theme.palette.text.primary, minHeight: 15 }}>{typingText}</h6>
             </div>

@@ -27,7 +27,7 @@ const Message = props => {
         <>
             { time && <p style = {{ textAlign: "center", margin: 0, color: props.backgroundText }}>{formatTime(time)}</p> }
 
-            <div style = {{ alignSelf: aligned, margin: "5px 10px", maxWidth: "50%" }}>
+            <div style = {{ alignSelf: aligned, margin: "5px 10px", maxWidth: "50%", wordBreak: "break-all" }}>
                 { !lastWasSame && <h4 style = {{ textAlign: textAlign, margin: 0, color: props.backgroundText }}>{sender}</h4> }
                 <div style = {{ backgroundColor: color, minWidth: 20, padding: 10, borderRadius: border }}>
                     <p style = {{ margin: 0, color: textColor }}>{props.parsed.content}</p>
@@ -45,11 +45,14 @@ function formatMessageTime(time) {
 
     let minute = date.getMinutes()
 
-    if (minute <= 9) minute = "0" + minute
+    if(minute === 0) minute = "00"
+    else if (minute <= 9) minute = "0" + minute
 
     const ampm = date.getHours() <= 11 ? "AM" : "PM"
 
-    const hour = ampm === "AM" ? date.getHours() : date.getHours() - 12
+    let hour = ampm === "AM" ? date.getHours() : date.getHours() - 12
+
+    if(hour === 0) hour = "00"
 
     return hour + ":" + minute + " " + ampm
 }
