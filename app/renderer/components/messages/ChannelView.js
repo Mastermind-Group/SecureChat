@@ -35,17 +35,23 @@ const ChannelView = props => {
     if(typers.length > 3) {
         typingText = "Multiple people are typing"
     }
-    else if(typers.length > 1) {
-        for(let i of typers) {
-            typingText += i.WhoTypingUsername + ", "
-        }
-
-        typingText += "are typing"
-    }
     else if(typers.length === 1) {
         typingText = typers[0].WhoTypingUsername + " is typing"
     }
+    else if(typers.length === 2) {
+        typingText = typers[0].WhoTypingUsername + " and " + typers[1].WhoTypingUsername + " are typing"
+    }
+    else if(typers.length > 2) {
+        for(let i of typers) {
+            typingText += i.WhoTypingUsername
 
+            if(i !== typers[typers.length - 1]) {
+                typingText += ", "
+            }
+        }
+
+        typingText += " are typing"
+    }
     useEffect(_ => {
         lastSend = null
 

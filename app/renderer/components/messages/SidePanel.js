@@ -13,8 +13,9 @@ import { CircularProgress, makeStyles, Divider } from "@material-ui/core"
 
 const useStyles = makeStyles({
     container: ({ theme }) => ({
-        width: "20%", 
-        maxWidth: 400, 
+        resize: "horizontal",
+        minWidth: 200,
+        maxWidth: 400,
         overflowY: "auto", 
         height: "100%",
         backgroundColor: theme.palette.background.paper, 
