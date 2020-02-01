@@ -37,6 +37,11 @@ const Channel = props => {
         lastMessage = JSON.parse(props.data.messages[props.data.messages.length - 1].Encrypted)
 
         sender = lastMessage.sender
+
+        if(sender === props.myUsername) {
+            sender = "You"
+        }
+
         time = props.data.messages[props.data.messages.length - 1].Timestamp
 
         const message = cutChars(15, lastMessage.content)
