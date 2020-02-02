@@ -42,6 +42,7 @@ const ChannelView = props => {
         typingText = typers[0].WhoTypingUsername + " and " + typers[1].WhoTypingUsername + " are typing"
     }
     else if(typers.length > 2) {
+        /* eslint-disable prefer-const */
         for(let i of typers) {
             typingText += i.WhoTypingUsername
 

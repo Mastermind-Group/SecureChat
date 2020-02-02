@@ -66,7 +66,7 @@ const SidePanel = props => {
         else {
             return props.channels.channels.slice().sort(sortChannels).map(e =>
                 <Fragment key={e._id}>
-                    <Channel data={e} setActive={setActive} isCurrent={props.channels.activeChannel === e.index} />
+                    <Channel data={e} setActive={setActive} isCurrent={props.channels.activeChannel === e.index} myUsername = {props.user.username} />
                     <Divider className = {styles.divider} />
                 </Fragment>
             )

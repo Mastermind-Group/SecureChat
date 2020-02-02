@@ -11,6 +11,8 @@ export const SET_LOAD_CHANNELS = "SET_LOAD_CHANNELS"
 export const ADD_TYPER = "ADD_TYPER"
 export const REMOVE_TYPER = "REMOVE_TYPER"
 
+export const CLEAR_DATA = "CLEAR_DATA"
+
 export const loadChannels = user => dispatch => {
     dispatch({
         type: SET_LOAD_CHANNELS,
@@ -72,6 +74,12 @@ export const removeTyper = typer => dispatch => {
     dispatch({
         type: REMOVE_TYPER,
         typer
+    })
+}
+
+export const clearData = _ => dispatch => {
+    dispatch({
+        type: CLEAR_DATA
     })
 }
 
