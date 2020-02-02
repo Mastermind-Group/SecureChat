@@ -7,7 +7,8 @@ import {
     ADD_MESSAGE, 
     SET_LOAD_CHANNELS,
     ADD_TYPER,
-    REMOVE_TYPER
+    REMOVE_TYPER,
+    CLEAR_DATA,
 } from "../actions/channelActions"
 
 import { decrypt } from "../util/crypto"
@@ -72,6 +73,8 @@ export default function(state = initialState, action) {
 
             return { ...state, channels: newChannels }
         }
+        case CLEAR_DATA:
+            return initialState
         default: 
             return state
     }
