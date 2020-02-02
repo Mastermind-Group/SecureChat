@@ -6,7 +6,7 @@ import { withTheme, useTheme } from "@material-ui/core"
 
 import { logout } from "../actions/userActions"
 import { setServerStatus } from "../actions/connectionActions"
-import { closeWebsocket } from "../actions/socketActions"
+import { closeWebsocket, openWebsocket } from "../actions/socketActions"
 import { clearData } from "../actions/channelActions"
 
 import axios from "axios"
@@ -173,7 +173,9 @@ const Header = props => {
                 {
                     props.connection.websocketConnected ?
                         <FaBolt color={theme.palette.primary.main} size={23} title="Websocket is open" /> :
-                        <FaBolt color="red" size={23} title="Websocket is closed" />
+                        <div onClick = {_ => props.openWebsocket(props.user.token)}>
+                            <FaBolt color="red" size={23} title="Websocket is closed" />
+                        </div>
                 }
             </div>
         </div>
@@ -194,7 +196,7 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { logout, setServerStatus, closeWebsocket, clearData })(withRouter(withTheme(Header)))
+export default connect(mapStateToProps, { logout, setServerStatus, closeWebsocket, openWebsocket, clearData })(withRouter(withTheme(Header)))
 
 const containerStyle = {
     display: "flex",
