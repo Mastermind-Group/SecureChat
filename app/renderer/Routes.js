@@ -59,7 +59,7 @@ const Routes = props => {
         if(props.user.token && props.user.token.length > 10 && !props.websocket && props.connection.serverConnected) {
             props.openWebsocket(props.user.token)
         }
-    }, [props.history, props.user, props.connection.serverConnected, props.channels.channels.length])
+    }, [props.history, props.user, props.connection.serverConnected, props.channels.channels.length, props.connection.websocketConnected])
 
     return (
         <MuiThemeProvider theme = {props.theme.currentTheme}>
