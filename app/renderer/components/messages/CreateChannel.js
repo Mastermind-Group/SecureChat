@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 
 import { connect } from "react-redux"
 import { withTheme, useTheme } from "@material-ui/core"
@@ -25,6 +25,7 @@ import {
     FormControl,
     makeStyles,
 } from "@material-ui/core"
+import { Autocomplete } from "@material-ui/lab/"
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -44,9 +45,12 @@ const CreateChannel = props => {
     const [channelName, setName] = useState("")
     const [formLoading, setLoading] = useState(false)
     const [searchUser, setUser] = useState("")
-    const [selectedUser, setSelected] = useState({})
     const [foundUsers, setFound] = useState([])
     const [newUsers, setUsers] = useState([])
+
+    const [searchLoading, setSearchLoading] = useState(false)
+
+    const[errorText, setErrorText] = useState("")
 
     const handleClickOpen = _ => {
         setOpen(true)
@@ -58,6 +62,17 @@ const CreateChannel = props => {
     }
 
     const createChannel = _ => {
+        if(channelName === "") {
+            setErrorText("You must give the channel a name")
+            return
+        }
+
+        if(newUsers.length === 0) {
+            setErrorText("You must add at least 1 user to this channel")
+            return
+        }
+
+        setErrorText("")
         setLoading(true)
 
         const secureString = randomBytes(64).toString("hex")
@@ -84,14 +99,11 @@ const CreateChannel = props => {
                 setLoading(false)
                 setOpen(false)
             })
-    }
-
-    const handleSearch = searchString => {
-        axios.get("https://servicetechlink.com/like/users/" + searchString)
-            .then(data => {
-                setFound(data.data.results)
+            .catch(err => {
+                console.error(err)
+                setErrorText("An unknown error occured")
+                setLoading(false)
             })
-            .catch(_err => { })
     }
 
     const handleRemoveUser = userIndex => {
@@ -100,10 +112,26 @@ const CreateChannel = props => {
 
     const handleAddUser = user => {
         setUsers([...newUsers, user])
-        setSelected({})
         setFound([])
         setUser("")
     }
+
+    useEffect(_ => {
+        if(searchUser !== "") {
+            setSearchLoading(true)
+            axios.get("https://servicetechlink.com/like/users/" + searchUser)
+            .then(data => {
+                const set = new Set()
+
+                for(let user of newUsers) 
+                    set.add(user.username)
+
+                setFound(data.data.results.filter(user => user.username !== props.user.username && !set.has(user.username)))
+                setSearchLoading(false)
+            })
+            .catch(_err => { })
+        }
+    }, [searchUser])
 
     return (
         <>
@@ -118,7 +146,7 @@ const CreateChannel = props => {
                 <DialogContent>
                     <DialogContentText>
                         Create a channel and add unlimited users
-                        </DialogContentText>
+                    </DialogContentText>
                     <TextField
                         autoFocus
                         margin="dense"
@@ -129,36 +157,53 @@ const CreateChannel = props => {
                         value={channelName}
                         onChange={event => setName(event.target.value)}
                     />
-                    <div style={{ display: "flex", alignItems: "center", margin: "10px 0" }}>
-                        <TextField
-                            margin="dense"
-                            id="username"
+                    <Autocomplete
+                        style = {{ margin: "10px 0px" }}
+                        id="username"
+                        label="Username"
+                        type="text"
+                        variant="outlined"
+                        getOptionSelected={(option, value) => option.username === value.username}
+                        onChange={event => {
+                            const text = event.target.textContent
+                            const user = foundUsers.find(user => user.username === text)
+
+                            if(user) 
+                                handleAddUser(user)
+                        }}
+                        getOptionLabel = {option => option.username || ""}
+                        options = {foundUsers}
+                        renderInput={params => (
+                            <TextField
+                            {...params}
                             label="Username"
-                            type="text"
+                            fullWidth
                             variant="outlined"
-                            value={searchUser}
-                            onChange={event => {
-                                setUser(event.target.value)
-                                handleSearch(event.target.value)
+                            onChange={event => setUser(event.target.value)}
+                            InputProps={{
+                                ...params.InputProps,
+                                endAdornment: (
+                                <React.Fragment>
+                                    {searchLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </React.Fragment>
+                                ),
                             }}
-                        />
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="user-select-label">Select User</InputLabel>
-                            <Select
-                                labelId="user-select-label"
-                                id="user-select"
-                                onChange={event => {
-                                    handleAddUser(event.target.value)
-                                }}
-                                value={selectedUser}
-                            >
-                                {foundUsers.map(e => <MenuItem key={e._id} value={e}>{e.username}</MenuItem>)}
-                            </Select>
-                        </FormControl>
-                    </div>
+                            />
+                        )}
+                    />
+                    <h3 style = {{ margin: "10px 0px 0px 0px" }}>{newUsers.length} user{newUsers.length === 1 ? "" :"s"}:</h3>
                     <List>
-                        {newUsers.map((user, index) => <ListItem key={user._id}>{user.username}<FiMinusCircle color="red" onClick={_ => handleRemoveUser(index)} style={{ cursor: "pointer" }} /></ListItem>)}
+                        {
+                            newUsers.reverse().slice(0, 50).map((user, index) => 
+                                <ListItem key={user._id}>
+                                    {user.username}
+                                    <FiMinusCircle color="red" onClick={_ => handleRemoveUser(index)} style={{ cursor: "pointer", margin: "0px 5px" }} />
+                                </ListItem>
+                            )
+                        }
                     </List>
+                    <h3 style = {{ color: "red" }}>{errorText}</h3>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
