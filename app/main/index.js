@@ -108,6 +108,6 @@ app.on("ready", async () => {
         })
     }
     else {
-        mainWindow.setMenuBarVisibility(false)
+        //mainWindow.setMenuBarVisibility(false)
     }
 })

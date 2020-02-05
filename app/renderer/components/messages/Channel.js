@@ -7,7 +7,7 @@ import { Card } from "@material-ui/core"
 const useStyles = makeStyles({
     container: ({ props, theme }) => ({
         cursor: "pointer", 
-        padding: 15,
+        padding: 5,
         backgroundColor: props.isCurrent ? theme.palette.primary.main : "", 
     }),
     title: ({ props, theme }) => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
                 theme.palette.text.primary
     }),
     subtitle: ({ props, theme }) => ({
-        margin: "0 5px", 
+        margin: "0 0px", 
         marginLeft: 10, 
         color: props.isCurrent ? 
                 theme.palette.primary.contrastText : 
@@ -56,7 +56,7 @@ const Channel = props => {
     return (
         <Card className = {styles.container} onClick={clickCard}>
             <div style = {{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <h2 className = {styles.title}>{props.data.Name}</h2>
+                <h4 className = {styles.title}>{props.data.Name}</h4>
 
                 { time && <p>{formatMessageTime(time)}</p> }
             </div>

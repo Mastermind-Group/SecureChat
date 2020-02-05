@@ -216,7 +216,9 @@ const ChannelView = props => {
                 authReq(props.user.token).post("https://servicetechlink.com/upload/", formData, {
                     headers: {
                       ...formData.getHeaders(),
+                    
                     },
+                    maxContentLength: 102428890
                   })
                     .then(data => {
                         console.log(data, metadata)
