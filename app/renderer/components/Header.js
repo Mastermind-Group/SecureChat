@@ -19,8 +19,9 @@ import {
     FaFileAlt,
     FaCog,
     FaSignOutAlt,
-    FaBars
+    FaBars,
 } from "react-icons/fa"
+import { MdPerson } from "react-icons/md"
 import {
     Drawer,
     Divider,
@@ -29,8 +30,9 @@ import {
     ListItemIcon,
     ListItemText,
     makeStyles,
-    
 } from "@material-ui/core"
+
+import AddPerson from "./AddPerson"
 
 let interval = null
 
@@ -102,7 +104,7 @@ const Header = props => {
                         disabled = {props.user.privateKey === "IMPORT"}
                     >
                         <ListItemIcon><FaComments size={23} color = {getActiveColor(isActiveMessages)}  /></ListItemIcon>
-                        <ListItemText primary = "Messages" style = {{ color: getActiveColor(isActiveMessages) }} />
+                        <ListItemText primary = "Messages" style = {{ color: getActiveColor(isActiveMessages), fontSize: "1.0rem" }} />
                     </ListItem>
                     <ListItem button disabled>
                         <ListItemIcon><FaLock size={23}  /></ListItemIcon>
@@ -155,28 +157,38 @@ const Header = props => {
 
     return (
         <div style={{ ...containerStyle, backgroundColor: theme.palette.background.paper, borderBottom: "1px solid " + theme.palette.background.default }}>
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ display: "flex", alignItems: "center", width: 200, minWidth: 200 }}>
                 {_renderMenu()}
-                <h1 style = {{ margin: "0 15px", color: theme.palette.text.primary }}>{name}</h1>
+                <h1 style = {{ margin: "0 15px", color: theme.palette.text.primary, fontSize: "1.5rem" }}>{name}</h1>
             </div>
-            <Drawer open={drawerOpen} onClose={_ => setDrawer(false)}>
-                {sidePanel()}
-            </Drawer>
-            <div style={{ display: "flex" }}>
+            <div style = {{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <div style = {{ display: "flex", alignItems: "center" }}>
+                    { <h3 style = {{ color: theme.palette.text.primary, margin: "0px 10px 0px 0px" }}>{props.channelName || ""}</h3> }
+                    { 
+                        props.channels.activeChannel !== -1 && 
+                        <AddPerson />
+                    }
+                    
+                </div>
+                <Drawer open={drawerOpen} onClose={_ => setDrawer(false)}>
+                    {sidePanel()}
+                </Drawer>
+                <div style={{ display: "flex" }}>
 
-                {
-                    props.connection.serverConnected ?
-                        <FaServer color={theme.palette.primary.main} size={23} title="Server is running" /> :
-                        <FaServer color="red" size={23} title="Server is down" />
-                }
-                <h2 style={{ margin: "0 5px" }}> </h2>
-                {
-                    props.connection.websocketConnected ?
-                        <FaBolt color={theme.palette.primary.main} size={23} title="Websocket is open" /> :
-                        <div onClick = {_ => props.openWebsocket(props.user.token)}>
-                            <FaBolt color="red" size={23} title="Websocket is closed" />
-                        </div>
-                }
+                    {
+                        props.connection.serverConnected ?
+                            <FaServer color={theme.palette.primary.main} size={23} title="Server is running" /> :
+                            <FaServer color="red" size={23} title="Server is down" />
+                    }
+                    <h2 style={{ margin: "0 5px" }}> </h2>
+                    {
+                        props.connection.websocketConnected ?
+                            <FaBolt color={theme.palette.primary.main} size={23} title="Websocket is open" /> :
+                            <div onClick = {_ => props.openWebsocket(props.user.token)}>
+                                <FaBolt color="red" size={23} title="Websocket is closed" />
+                            </div>
+                    }
+                </div>
             </div>
         </div>
     )
@@ -192,7 +204,8 @@ const mapStateToProps = state => {
     return {
         user: state.user,
         connection: state.connection,
-        channelName: channelName
+        channelName: channelName,
+        channels: state.channels
     }
 }
 
@@ -204,5 +217,5 @@ const containerStyle = {
     alignItems: "center",
     top: 0,
     backgroundColor: "white",
-    padding: 5,
+    padding: "5px 5px 5px 0px"
 }
