@@ -84,11 +84,8 @@ export default function(state = initialState, action) {
 
             for(let i in newChannels) {
                 if(newChannels[i]._id === channelID) {
-                    console.log("found")
                     for(let j in newUsersArr) {
                         const newUserData = newUsersArr[j]
-
-                        console.log(newUserData)
 
                         newChannels[i].privateKeys[newUserData] = newUsers[newUserData]
                     }

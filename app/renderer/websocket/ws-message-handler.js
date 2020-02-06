@@ -52,32 +52,26 @@ export const handleMessage = message => {
 
             for(let channelObj in myChannels) {
                 const channelData = store.getState().channels.channels[channelObj]
-
-                console.log(channelData)
-
+                
                 if(channelData._id === channel) {
                     found = channelData
                 }
             }
 
-            console.log({ found, myChannels, channel })
-
             if(!found) {
                 // You were added to this channel
                 store.dispatch(loadChannels(store.getState().user))
+
+                if(isAway) {
+                    new Notification("SecureChat", {
+                        body: "You were added to a channel",
+                        icon: ""
+                    })
+                }
             }
             else {
                 // Someone else was added to this channel
                 store.dispatch(addUser(channel, newPeople))
-            }
-
-            
-
-            if(isAway) {
-                new Notification("SecureChat", {
-                    body: "Someone started a new channel with you",
-                    icon: ""
-                })
             }
 
             break
