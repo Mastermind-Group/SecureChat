@@ -10,6 +10,7 @@ export const ADD_MESSAGE = "ADD_MESSAGE"
 export const SET_LOAD_CHANNELS = "SET_LOAD_CHANNELS"
 export const ADD_TYPER = "ADD_TYPER"
 export const REMOVE_TYPER = "REMOVE_TYPER"
+export const ADD_USER = "ADD_USER"
 
 export const CLEAR_DATA = "CLEAR_DATA"
 
@@ -74,6 +75,14 @@ export const removeTyper = typer => dispatch => {
     dispatch({
         type: REMOVE_TYPER,
         typer
+    })
+}
+
+export const addUser = (channelID, newUsers) => dispatch => {
+    dispatch({
+        type: ADD_USER,
+        channel: channelID,
+        newUsers: newUsers
     })
 }
 

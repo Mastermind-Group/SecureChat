@@ -8,10 +8,12 @@ import {
     SET_LOAD_CHANNELS,
     ADD_TYPER,
     REMOVE_TYPER,
+    ADD_USER,
     CLEAR_DATA,
 } from "../actions/channelActions"
 
 import { decrypt } from "../util/crypto"
+import { stat } from "fs"
 
 const initialState = {
     channels: [],
@@ -69,6 +71,28 @@ export default function(state = initialState, action) {
                 if(newChannels[i]._id === action.typer.ChannelID) {
                     delete newChannels[i].typers[action.typer.WhoTypingUsername]
                 }
+            }
+
+            return { ...state, channels: newChannels }
+        }
+        case ADD_USER: {
+            const channelID = action.channel
+            const newUsers = action.newUsers
+            const newUsersArr = Object.keys(newUsers)
+
+            const newChannels = [...state.channels]
+
+            for(let i in newChannels) {
+                if(newChannels[i]._id === channelID) {
+                    console.log("found")
+                    for(let j in newUsersArr) {
+                        const newUserData = newUsersArr[j]
+
+                        console.log(newUserData)
+
+                        newChannels[i].privateKeys[newUserData] = newUsers[newUserData]
+                    }
+                } 
             }
 
             return { ...state, channels: newChannels }

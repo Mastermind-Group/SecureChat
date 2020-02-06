@@ -1,6 +1,6 @@
 import store from "../store/store"
 
-import { addMessage, addChannel, addTyper, removeTyper } from "../actions/channelActions"
+import { addMessage, addChannel, addTyper, removeTyper, addUser, loadChannels } from "../actions/channelActions"
 
 const timeouts = {}
 
@@ -42,6 +42,46 @@ export const handleMessage = message => {
             }
 
             break
+        case "ADD_USER": {
+            const channel = message.MessageContent.ChannelID
+            const newPeople = message.MessageContent.NewUsers
+
+            const myChannels = Object.keys(store.getState().channels.channels)
+
+            let found = null
+
+            for(let channelObj in myChannels) {
+                const channelData = store.getState().channels.channels[channelObj]
+
+                console.log(channelData)
+
+                if(channelData._id === channel) {
+                    found = channelData
+                }
+            }
+
+            console.log({ found, myChannels, channel })
+
+            if(!found) {
+                // You were added to this channel
+                store.dispatch(loadChannels(store.getState().user))
+            }
+            else {
+                // Someone else was added to this channel
+                store.dispatch(addUser(channel, newPeople))
+            }
+
+            
+
+            if(isAway) {
+                new Notification("SecureChat", {
+                    body: "Someone started a new channel with you",
+                    icon: ""
+                })
+            }
+
+            break
+        }
         case "IS_TYPING": {
             const channel = message.MessageContent.ChannelID
             const person = message.MessageContent.WhoTypingID
