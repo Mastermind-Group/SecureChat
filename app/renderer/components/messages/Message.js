@@ -61,7 +61,7 @@ const Message = props => {
                 <div style = {{ backgroundColor: color, minWidth: 20, padding: 10, borderRadius: border }}>
                     { 
                         props.parsed.type === "MESSAGE" ?  
-                        <p style = {{ margin: 0, color: textColor }}>{props.parsed.content}</p> : 
+                        <p style = {{ margin: 0, color: textColor, wordBreak: "break-word" }}>{props.parsed.content}</p> : 
                         <>
                             <p style = {{ margin: 0, color: textColor }}>Short name: {props.parsed.content.name.slice(0, 25)}</p>
                             <p style = {{ margin: "5px 0 0 0", color: textColor }}>Type: {props.parsed.content.extension}: "{extension}"</p>

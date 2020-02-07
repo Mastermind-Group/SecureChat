@@ -91,6 +91,8 @@ app.on("ready", async () => {
         }
     })
 
+    mainWindow.setMenuBarVisibility(false)
+
     if (isDevelopment) {
         // auto-open dev tools
         mainWindow.webContents.openDevTools()
