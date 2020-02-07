@@ -10,7 +10,7 @@ After downloading the app you may register an account. When this happens your co
 
 ### "Wait but the code IS sending the private key to the server!!"
 
-Not really. We were sending the private key to the server in an earlier build and to be fair it was encrypted with the user's password. Now the private keys only exist on your computer. If you want to login from a different device, you must export your key from your account and then import the key after logging in on the new device. Currently you may only do this by getting the file onto your computer somehow but in a future release you will be able to do so over a network.
+We were sending the private key to the server in an earlier build and to be fair it was encrypted with the user's password. Now the private keys only exist on your computer. If you want to login from a different device, you must export your key from your account and then import the key after logging in on the new device. Currently you may only do this by manually importing the file through USB or other means but in a future release you will be able to do so over a network securely.
 
 ## Development
 
@@ -20,7 +20,7 @@ You may fork this project and make pull requests whenever you want. Please make 
 
 ## To start
 
-1. git clone https://github.com/Mastermind-Group/SecureChat.git
+1. git clone `your repo`
 2. cd into the new folder
 3. run `yarn develop`
 
