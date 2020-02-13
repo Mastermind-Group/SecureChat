@@ -13,10 +13,6 @@ SecureChat is an open source application built on Electron with a Go backend. Th
 
 After downloading the app you may register an account. When this happens your computer will generate a public and private key. Public keys can be thought of as locks and private keys the only key to unlock that lock. Your computer will send the public key(lock) to the server but keep the private key(key) locked away on your computer. When you create a new messaging channel, your computer will randomly generate a strong password just for this channel. After this it will take all of the users you invited and encrypt this channel password with their public key. This is essentially creating a box for each person and putting the channel password in the box, then locking the box with their lock. Essentially when you log in you look for all the boxes addressed to you and use your private key to unlock the box and read the channel password. When you send messages to this channel you both encrypt and decrypt messages with the channel password. If you want to read more, look into RSA (which are the public and private keys) and AES (Which is a method that both encrypts and decrypts messages with a password, in this case the channel password)
 
-### "Wait but the code IS sending the private key to the server!!"
-
-We were sending the private key to the server in an earlier build and to be fair it was encrypted with the user's password. Now the private keys only exist on your computer. If you want to login from a different device, you must export your key from your account and then import the key after logging in on the new device. Currently you may only do this by manually importing the file through USB or other means but in a future release you will be able to do so over a network securely.
-
 ## Development
 
 ### How can I help develop this app?
