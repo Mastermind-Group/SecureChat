@@ -1,7 +1,9 @@
 # Welcome to SecureChat!
 
 Web version live: https://securechat.netlify.com/
+
 Web version github: https://github.com/VincentCosta6/SecureChatWeb
+
 
 Backend github: https://github.com/VincentCosta6/SecureChatGo
 
