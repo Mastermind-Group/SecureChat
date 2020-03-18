@@ -1,5 +1,10 @@
 # Welcome to SecureChat!
 
+Web version live: https://securechat.netlify.com/
+Web version github: https://github.com/VincentCosta6/SecureChatWeb
+
+Backend github: https://github.com/VincentCosta6/SecureChatGo
+
 ## What is SecureChat?
 
 SecureChat is an open source application built on Electron with a Go backend. This application intends to provide messaging where you can add unlimited people to a group chat, built in password management features, and a note/file sharing system. These features are entirely encrypted and secure. We aim to have this application be secure in all scenarios, even if the server was compromised and potentially monitoring all traffic no data would be readable by the attacker.
