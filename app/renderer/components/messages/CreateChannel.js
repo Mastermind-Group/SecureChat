@@ -80,7 +80,7 @@ const CreateChannel = props => {
             privateKeys
         }
 
-        authReq(props.user.token).post("https://servicetechlink.com/channel/create", JSON.stringify(channelObj))
+        authReq(props.user.token).post("https://securechat-go.herokuapp.com/channel/create", JSON.stringify(channelObj))
             .then(_data => {
                 setRequestLoading(false)
                 setOpen(false)
@@ -105,7 +105,7 @@ const CreateChannel = props => {
     useEffect(_ => {
         if(searchUser !== "") {
             setSearchLoading(true)
-            axios.get("https://servicetechlink.com/like/users/" + searchUser)
+            axios.get("https://securechat-go.herokuapp.com/like/users/" + searchUser)
             .then(data => {
                 const set = new Set()
 

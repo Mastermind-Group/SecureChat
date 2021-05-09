@@ -13,7 +13,7 @@ import {
 } from "../websocket/ws-redux-connect"
 
 export const openWebsocket = token => dispatch => {
-    const client = new websocket("wss://servicetechlink.com/ws", {
+    const client = new websocket("wss://securechat-go.herokuapp.com/ws", {
         headers: {
             "Authorization": token
         }

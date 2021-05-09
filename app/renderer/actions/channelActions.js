@@ -20,7 +20,7 @@ export const loadChannels = user => dispatch => {
         isLoading: true
     })
 
-    authReq(user.token).get("https://servicetechlink.com/channels/mine")
+    authReq(user.token).get("https://securechat-go.herokuapp.com/channels/mine")
         .then(data => {
             let channels = data.data.results
 

@@ -58,7 +58,7 @@ const Header = props => {
     }, [props])
 
     const pingServer = props => {
-        axios.get("https://servicetechlink.com/ping", {
+        axios.get("https://securechat-go.herokuapp.com/ping", {
             timeout: 5000
         })
             .then(data => {

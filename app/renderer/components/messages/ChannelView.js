@@ -80,7 +80,7 @@ const ChannelView = props => {
 
         setSending(true)
 
-        authReq(props.user.token).post("https://servicetechlink.com/message/create", JSON.stringify({
+        authReq(props.user.token).post("https://securechat-go.herokuapp.com/message/create", JSON.stringify({
             channelID: currentChannel._id,
             message: encrypt(JSON.stringify({
                 content,
@@ -213,7 +213,7 @@ const ChannelView = props => {
                 input.close()
                 output.close()
 
-                authReq(props.user.token).post("https://servicetechlink.com/upload/", formData, {
+                authReq(props.user.token).post("https://securechat-go.herokuapp.com/upload/", formData, {
                     headers: {
                       ...formData.getHeaders(),
                     
@@ -231,7 +231,7 @@ const ChannelView = props => {
 
     const fileDownloaded = metadata => {
         ipcRenderer.send("download", {
-            url: "https://servicetechlink.com/download-file/" + metadata.shasum,
+            url: "https://securechat-go.herokuapp.com/download-file/" + metadata.shasum,
             //properties: {  }
         })
         ipcRenderer.on("download complete", (event, file) => {

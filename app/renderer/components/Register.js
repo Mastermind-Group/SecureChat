@@ -173,7 +173,7 @@ const Register = props => {
     }
 
     const sendSignup = (publicKey, privateKey, protectedKey) => {
-        axios.post("https://servicetechlink.com/register", JSON.stringify({
+        axios.post("https://securechat-go.herokuapp.com/register", JSON.stringify({
             username: form.username,
             password: form.password,
             publicKey,

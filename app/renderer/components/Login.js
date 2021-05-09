@@ -106,7 +106,7 @@ const Login = props => {
     }
 
     const sendLogin = _ => {
-        axios.post("https://servicetechlink.com/login", JSON.stringify(form), {
+        axios.post("https://securechat-go.herokuapp.com/login", JSON.stringify(form), {
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
@@ -157,6 +157,7 @@ const Login = props => {
     const handleError = err => {
         setLoading(false)
         clearInterval(interval)
+        console.log(err)
         if (err.response) {
             setError(err.response.data.message)
         }
